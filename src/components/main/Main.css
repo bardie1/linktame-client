@@ -1,0 +1,15 @@
+.main-container {
+    position: relative;
+    width: 100vw;
+    min-width:  100vw;
+    height: 100vh;
+    background-color: rgb(254, 251, 255);
+    display: flex;
+    justify-content: center;
+}
+
+.header-holder {
+    position: sticky;
+    top: 0;
+    width: 100vw;
+}
