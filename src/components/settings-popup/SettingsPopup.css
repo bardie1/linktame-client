@@ -1,0 +1,23 @@
+.settings-popup-container {
+    width: fit-content;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 1px 1px 20px 1px rgba(0, 0, 0, 0.171) ;
+}
+
+.settings-popup-list > li{
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    width: 200px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.settings-popup-list > li:hover{
+    background-color: var(--lightPurple);
+}
+
+.settings-popup-list > li > i{
+    margin-right: 10px;
+}
