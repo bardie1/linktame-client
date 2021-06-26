@@ -1,0 +1,40 @@
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    height: 45px;
+    background-color: rgb(255, 255, 255);
+    align-items: center;
+    padding: 10px 40px 10px 40px;
+    box-shadow: 0px 1px 40px 1px rgba(157, 0, 255, 0.103);
+}
+
+.header-logo-container {
+    width: fit-content;
+    color: var(--purple);
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.header-settings-container {
+    width: 200px;
+    display: flex;
+    align-items: center;
+}
+
+.header-arrow-icon-holder {
+    cursor: pointer;
+}
+
+.header-user-name-holder {
+   margin-right: 10px;
+   margin-left: auto;
+   color: rgb(49, 49, 49);
+   font-weight: 600;
+   letter-spacing: 1px;
+}
+
+.setting-popup-holder {
+    position: absolute;
+    top: 66px;
+    right: 5px;
+}
