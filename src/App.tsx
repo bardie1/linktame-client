@@ -17,8 +17,10 @@ function App() {
     if (userStorage) {
       let user2 = JSON.parse(userStorage);
       dispatch(login({
-        email: user2.email,
-        password: user2.password
+        public_id: user2.public_id,
+        token: user2.token,
+        name: user2.name,
+        email: user2.email
       }));
     }
   }, [])

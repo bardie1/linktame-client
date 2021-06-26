@@ -2,8 +2,10 @@ import React, {useEffect, useState} from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from '../../redux/slicers/userSlicer';
 import { sessionService } from '../../services/session.service';
-
+import { authService } from "../../services/auth.service";
 import './Login.css';
+import { UserInfo } from 'os';
+import { UserSignUpLogin } from '../../models/userSIgnUpLogin';
 
 type LoginProps = {
     formSwitch: Function,
@@ -27,10 +29,28 @@ export const Login = ({ formSwitch }: LoginProps) => {
         }
     }, [email, password])
 
-    const loginToApp = (e: any) => {
+    const loginToApp = async (e: any) => {
         e.preventDefault();
-        dispatch(login({email: email, password: password}));
-        sessionService.setUser({email: email, password: password});
+        let details: UserSignUpLogin = {
+            email: email,
+            password: password,
+        }
+        let res = await authService.login(details)
+
+        if (res.successful === "true") {
+            dispatch(login({
+                public_id: res.user.public_id,
+                token: res.token,
+                name: res.user.name,
+                email: res.user.email
+            }));
+            sessionService.setUser({public_id: res.user.public_id, 
+                token: res.token,
+                name: res.user.name,
+                email: res.user.email});
+        } else {
+            console.log(res);
+        }
     }
 
     return (

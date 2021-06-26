@@ -3,6 +3,10 @@ import "./SetName.css";
 import { useDebounce } from '../../hooks/debounce.hook';
 import { userService } from '../../services/user.service'
 import { LoadingWheel } from '../loading-wheel/LoadingWheel'
+import { login, selectUser } from '../../redux/slicers/userSlicer';
+import { useSelector, useDispatch} from 'react-redux';
+import { User } from '../../models/user';
+import { sessionService } from '../../services/session.service';
 
 export const SetName = () => {
 
@@ -13,13 +17,45 @@ export const SetName = () => {
 
     const debouncedLinkName = useDebounce(link, 500);
 
+    const user = useSelector(selectUser)
+    const dispatch = useDispatch()
+
     const isLinkValid = async (linkName: string) => {
+        // setLoading(true);
+        // //let res = await userService.linkNameAvaliable(debouncedLinkName);
+        // //setLinkAvailable();
+        // setTimeout(() => {
+        //     setLoading(false);
+        // }, 3000); 
+    }
+
+    const claimLink = async(e: any) =>{
+        e.preventDefault()
         setLoading(true);
-        let res = await userService.linkNameAvaliable(debouncedLinkName);
-        //setLinkAvailable();
-        setTimeout(() => {
+        let u: User = {
+            public_id: user.name,
+            email: user.email,
+            name: link
+        }
+        let res = await userService.updateUser(u);
+        if (res.successful === 'true') {
+            dispatch(login({
+                public_id: res.user.public_id,
+                token: res.token,
+                email: res.user.email,
+                name: link
+            }))
+            sessionService.setUser({
+                public_id: res.user.public_id,
+                token: res.token,
+                email: res.user.email,
+                name: link
+            });
             setLoading(false);
-        }, 3000); 
+        } else {
+            console.log(res);
+            setLoading(false);
+        }
     }
 
     useEffect(() => {
@@ -52,7 +88,7 @@ export const SetName = () => {
                         </div>
                     </div>
                     <div className="set-name-button-holder">
-                        <button className="filled" type="submit">Claim LinktaMe</button>
+                        <button onClick={ e => claimLink(e)} className="filled" type="submit">Claim LinktaMe</button>
                     </div>
                 </form>
             </div>

@@ -6,7 +6,8 @@ import { login } from '../../redux/slicers/userSlicer';
 import { useDispatch } from 'react-redux';
 
 import { sessionService }  from '../../services/session.service';
-
+import { authService }  from '../../services/auth.service';
+import {UserSignUpLogin} from '../../models/userSIgnUpLogin'
 
 type SignUpProps = {
     formSwitch: Function,
@@ -33,13 +34,31 @@ export const SignUp = ({ formSwitch }: SignUpProps) => {
     }, [email, password, password2])
 
 
-    const signUp = (e: any) => {
+    const signUp = async (e: any) => {
         e.preventDefault()
-        dispatch(login({
+        let details: UserSignUpLogin = {
+            name: null,
             email: email,
             password: password
-        }));
-        sessionService.setUser({email: email, password: password});
+        }
+
+
+        let res = await authService.signUp(details)
+        console.log(res);
+        if (res.successful === "true") {
+            dispatch(login({
+                public_id: res.user.public_id,
+                token: res.token,
+                name: res.user.name,
+                email: res.user.email
+            }));
+            sessionService.setUser({public_id: res.user.public_id, 
+                token: res.token,
+                name: res.user.name,
+                email: res.user.email});
+        } else {
+            console.log(res);
+        }
     }
 
     return (

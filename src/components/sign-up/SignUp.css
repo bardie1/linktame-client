@@ -12,6 +12,7 @@
 .sign-up-header {
     color: var(--purple);
     margin-bottom: 40px;
+    text-align: center;
 }
 
 .sign-up-form {

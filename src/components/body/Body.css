@@ -1,0 +1,11 @@
+.body-container {
+    display: flex;
+    justify-content: center;
+    height: 2000px;
+    width: 100%;
+}
+
+.test {
+    width: 80%;
+    max-width: 80%;
+}

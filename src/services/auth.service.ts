@@ -1,21 +1,27 @@
 import { env } from '../environments/environment';
+import {UserSignUpLogin} from '../models/userSIgnUpLogin'
+import jwt from 'jwt-decode';
+import base64 from 'base-64';
 
-type UserSignUpLogin = {
-    email: string,
-    password: string
-}
-
-
-export const login = async (user: UserSignUpLogin) => {
-    let res = await fetch(env.url + '', {
+const login = async (user: UserSignUpLogin) => {
+    console.log(user);
+    let res = await fetch(env.url + 'auth/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(user),
+            'Authorization': 'Basic ' + base64.encode(user.email + ":" + user.password),
+        }
     })
-    .then(response => response.json())
+    .then(response => {console.log(response); return response.json()})
     .then(data => {
+        console.log(data);
+        if (data.successful === "false") {
+            throw new Error (data.message);
+        }
+        const token = data.token;
+        const user = jwt(token);
+        console.log(user);
+        data.user = user;
         console.log('Success:', data);
         return data;
     })
@@ -27,8 +33,8 @@ export const login = async (user: UserSignUpLogin) => {
     return res;
 }
 
-export const signUp = async (user: UserSignUpLogin) => {
-    let res = await fetch(env.url + '', {
+const signUp = async (user: UserSignUpLogin) => {
+    let res = await fetch(env.url + 'auth/user', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -37,6 +43,13 @@ export const signUp = async (user: UserSignUpLogin) => {
     })
     .then(response => response.json())
     .then(data => {
+        if (data.successful === "false") {
+            throw new Error(data.message);
+        }
+        console.log(data);
+        const token = data.token;
+        const user = jwt(token);
+        data.user = user;
         console.log('Success:', data);
         return data;
     })
@@ -46,4 +59,9 @@ export const signUp = async (user: UserSignUpLogin) => {
     })
 
     return res;
+}
+
+export const authService = {
+    login,
+    signUp
 }

@@ -1,4 +1,4 @@
-export interface link {
+export default interface link {
     id: number;
     text: string;
     linkName: string;

@@ -1,3 +1,3 @@
 export const env = {
-    url: 'sometext',
+    url: 'https://linktame-api.herokuapp.com/v1/',
 }
