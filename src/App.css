@@ -1,5 +1,13 @@
+:root {
+  --purple: #9E00FF;
+  --lightPurple: rgb(250, 245, 253);
+} 
+
 .App {
   text-align: center;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
 }
 
 .App-logo {
@@ -35,4 +43,40 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+form > .input-holder {
+  display: flex;
+  flex-direction: column;
+}
+form > .input-holder > label {
+  font-weight: 500;
+  color: rgb(83, 83, 83);
+  padding-bottom: 5px;
+}
+
+input {
+  border: none;
+  background-color: var(--lightPurple);
+  border-radius: 5px;
+}
+
+input:focus {
+  outline: solid;
+  outline-color: var(--purple);
+  border-radius: 5px;
+}
+
+button.filled {
+  background-color: var(--purple);
+  width: 100%;
+  color: whitesmoke;
+  font-weight: bold;
+  letter-spacing: 1px;
+  border: transparent;
+  border-radius: 5px;
+}
+
+button:disabled {
+  background-color: rgb(223, 223, 223);
 }
