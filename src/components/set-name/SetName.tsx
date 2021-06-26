@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import "./SetName.css";
-import useDebounce from '../../hooks/debounce.hook';
+import { useDebounce } from '../../hooks/debounce.hook';
 import { userService } from '../../services/user.service'
 import { LoadingWheel } from '../loading-wheel/LoadingWheel'
 
