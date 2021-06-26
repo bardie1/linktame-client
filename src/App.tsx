@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
 import './App.css';
 
+import { Main } from './components/main/Main';
 import { Auth } from "./components/auth/Auth";
 import { useDispatch, useSelector } from 'react-redux';
 import { sessionService } from './services/session.service';
@@ -10,14 +10,15 @@ import { login, selectUser } from './redux/slicers/userSlicer';
 function App() {
 
   const userStorage = sessionService.getUser();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const user = useSelector(selectUser);
+
   useEffect(() => {
     if (userStorage) {
-      let user = JSON.parse(userStorage);
+      let user2 = JSON.parse(userStorage);
       dispatch(login({
-        email: user.email,
-        password: user.password
+        email: user2.email,
+        password: user2.password
       }));
     }
   }, [])
@@ -26,9 +27,8 @@ function App() {
     <div className="App">
       {
         user ? (
-          <div>This</div>
+          <Main />
         ) : (
-          
           <Auth />
         )
       }

@@ -6,7 +6,12 @@ const getUser = () => {
     return localStorage.getItem("user");
 }
 
+const clearSession = () => {
+    localStorage.clear();
+}
+
 export const sessionService = {
     setUser,
     getUser,
+    clearSession
 }
