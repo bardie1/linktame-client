@@ -1,0 +1,64 @@
+.set-name-input-holder > .input-group {
+    display: flex;
+    border: 1px solid var(--purple);
+    border-radius: 5px;
+    align-items: center;
+    max-height: 38px;
+    overflow: hidden;
+}
+
+.set-name-container {
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 30%;
+    height: fit-content;
+    min-width: 300px;
+    padding: 10px;
+}
+
+.set-name-header-holder {
+    color: rgb(54, 54, 54);
+    margin-bottom: 40px;
+}
+.set-name-header-holder > h1 > span {
+    color: var(--purple);
+    margin-bottom: 40px;
+}
+
+.set-name-input-holder > .input-group > .input-item.input-group-prefix {
+    font-weight: bold;
+    color: var(--purple);
+    background-color: var(--lightPurple);
+    width: fit-content;
+    padding: 10px 3px 10px 10px;
+}
+
+.set-name-input-holder > .input-group > .input-item.input-group-suffix {
+    background-color: var(--lightPurple);
+    width: 20px;
+    padding: 10px 20px 10px 10px;
+}
+
+.set-name-input-holder > .input-group > .input-item {
+    padding: 10px 3px 10px 10px;
+}
+.set-name-input-holder > .input-group > input.input-item {
+    width: 100%;
+    outline: none;
+    padding: 10px 3px 10px 2px;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.set-name-input-holder > .input-group > input.input-item::placeholder {
+   font-style: italic;
+}
+
+.set-name-button-holder {
+    margin-top: 20px;
+}
+
+.set-name-button-holder > button {
+    height: 40px;
+    font-size: 18px;
+}
