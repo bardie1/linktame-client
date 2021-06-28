@@ -40,9 +40,9 @@ const signUp = async (user: UserSignUpLogin) => {
     .then(response => response.json())
     .then(data => {
         if (data.successful === "false") {
-            throw new Error(data.message);
+            data.message = "An account with this email already exists";
+            return data
         }
-        console.log(data);
         const token = data.token;
         const user = jwt(token);
         data.user = user;

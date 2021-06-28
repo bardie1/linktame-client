@@ -7,8 +7,9 @@
     padding: 2em;
     border-radius: 10px;
     height: fit-content !important;
-    min-width: 300px;
-    max-width: 90vw;
+    width: 30%;
+    min-width: 350px;
+    max-width: 500px;
 }
 
 .login-header {

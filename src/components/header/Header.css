@@ -2,7 +2,7 @@
     position: sticky;
     top: 0;
     display: flex;
-    max-width: 100vw;
+    max-width: 100%;
     justify-content: space-between;
     height: 45px;
     background-color: rgb(255, 255, 255);
@@ -32,8 +32,8 @@
    margin-right: 10px;
    margin-left: auto;
    color: rgb(49, 49, 49);
-   font-weight: 600;
-   letter-spacing: 1px;
+   font-weight: 500;
+   
 }
 
 .setting-popup-holder {

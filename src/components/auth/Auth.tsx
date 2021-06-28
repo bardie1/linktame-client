@@ -14,8 +14,6 @@ export const Auth = () => {
     }, [loginScreen])
 
     const changeScreen = (setLoginValue: boolean) => {
-        console.log("Clicked");
-        console.log(setLoginValue);
         setLoginScreen(setLoginValue);
     }
 

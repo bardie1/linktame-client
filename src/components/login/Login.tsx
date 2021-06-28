@@ -24,7 +24,6 @@ export const Login = ({ formSwitch }: LoginProps) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log("this");
         if (email && password) {
             setFormValid(true);
         } else {
@@ -53,7 +52,6 @@ export const Login = ({ formSwitch }: LoginProps) => {
                 name: res.user.name,
                 email: res.user.email});
         } else { 
-            console.log(res.message);
             setErrorMessage(res.message);
         }
         setLoginLoading(false); 

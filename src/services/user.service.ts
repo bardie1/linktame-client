@@ -6,7 +6,6 @@ import jwt from 'jwt-decode';
 
 
 const linkNameAvaliable = async (linkName: string) => {
-    console.log(linkName);
     const res = await fetch(env.url + '', {
         method: 'GET',
         headers: {
@@ -27,7 +26,6 @@ const linkNameAvaliable = async (linkName: string) => {
 }
 
 const updateUser = async (user: User) => {
-    console.log(user);
     const userState = sessionService.getUserAsObj();
     let res = await fetch(env.url + 'auth/user', {
         method: 'PUT',
@@ -39,10 +37,13 @@ const updateUser = async (user: User) => {
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data);
+
+        if (data.successful === "false") {
+            data.message = "Unfortunately this link is unavailable. Please choose another one.";
+            return data;
+        }
         const token = data.token;
         const user = jwt(token);
-        console.log(user);
         data.user = user;
         console.log('Success:', data);
         return data;
