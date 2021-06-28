@@ -7,6 +7,8 @@ import { login, selectUser } from '../../redux/slicers/userSlicer';
 import { useSelector, useDispatch} from 'react-redux';
 import { User } from '../../models/user';
 import { sessionService } from '../../services/session.service';
+import { ErrorPanel } from '../error-panel/ErrorPanel';
+
 
 export const SetName = () => {
 
@@ -14,6 +16,7 @@ export const SetName = () => {
     const [linkAvailable, setLinkAvailable] = useState<boolean>(false);
     const [valid, setValid] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const debouncedLinkName = useDebounce(link, 500);
 
@@ -32,6 +35,7 @@ export const SetName = () => {
     const claimLink = async(e: any) =>{
         e.preventDefault()
         setLoading(true);
+        setErrorMessage('');
         let u: User = {
             public_id: user.name,
             email: user.email,
@@ -53,7 +57,7 @@ export const SetName = () => {
             });
             setLoading(false);
         } else {
-            console.log(res);
+            setErrorMessage(res.message)
             setLoading(false);
         }
     }
@@ -76,6 +80,10 @@ export const SetName = () => {
                     <div className="set-name-header-holder">
                         <h1>Claim your <span>LinktaMe</span> link</h1> 
                     </div>
+                    {(errorMessage && errorMessage !== '') &&
+                    (<div className="claim-name-form-error-holder">
+                        <ErrorPanel message={errorMessage} />
+                    </div>)}
                     <div className="set-name-input-holder">
                         <div className="input-group">
                             <div className="input-item input-group-prefix">
@@ -88,7 +96,11 @@ export const SetName = () => {
                         </div>
                     </div>
                     <div className="set-name-button-holder">
-                        <button onClick={ e => claimLink(e)} className="filled" type="submit">Claim LinktaMe</button>
+                        <button onClick={ e => claimLink(e)} className="filled" type="submit">
+                            {
+                                !loading ? ('Claim LinktaMe') : <LoadingWheel  color="white" size="18px" borderTickness="2px" />
+                            }
+                        </button>
                     </div>
                 </form>
             </div>

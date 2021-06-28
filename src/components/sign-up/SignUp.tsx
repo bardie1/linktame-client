@@ -8,6 +8,8 @@ import { useDispatch } from 'react-redux';
 import { sessionService }  from '../../services/session.service';
 import { authService }  from '../../services/auth.service';
 import {UserSignUpLogin} from '../../models/userSIgnUpLogin'
+import { ErrorPanel } from '../error-panel/ErrorPanel';
+import { LoadingWheel } from '../loading-wheel/LoadingWheel';
 
 type SignUpProps = {
     formSwitch: Function,
@@ -19,13 +21,14 @@ export const SignUp = ({ formSwitch }: SignUpProps) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const [signupLoading, setSignupLoading] = useState(false);
 
     const [formValid, setFormValid] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log("this");
         if (email && password && password2 && password === password2) {
             setFormValid(true);
         } else {
@@ -36,6 +39,8 @@ export const SignUp = ({ formSwitch }: SignUpProps) => {
 
     const signUp = async (e: any) => {
         e.preventDefault()
+        setSignupLoading(true);
+        setErrorMessage('');
         let details: UserSignUpLogin = {
             name: null,
             email: email,
@@ -44,7 +49,7 @@ export const SignUp = ({ formSwitch }: SignUpProps) => {
 
 
         let res = await authService.signUp(details)
-        console.log(res);
+
         if (res.successful === "true") {
             dispatch(login({
                 public_id: res.user.public_id,
@@ -57,8 +62,10 @@ export const SignUp = ({ formSwitch }: SignUpProps) => {
                 name: res.user.name,
                 email: res.user.email});
         } else {
-            console.log(res);
+            setErrorMessage(res.message)
         }
+
+        setSignupLoading(false);
     }
 
     return (
@@ -69,6 +76,10 @@ export const SignUp = ({ formSwitch }: SignUpProps) => {
 
             <div className="sign-up-form">
                 <form action="submit">
+                {(errorMessage && errorMessage !== '') &&
+                    (<div className="signup-form-error-holder">
+                        <ErrorPanel message={errorMessage} />
+                    </div>)}
                     <div className="sign-up-form-input-holder input-holder email">
                         <label htmlFor="email">Email</label>
                         <input onChange={e => setEmail(e.target.value)} type="email"/>
@@ -82,7 +93,11 @@ export const SignUp = ({ formSwitch }: SignUpProps) => {
                         <input onChange={e => setPassword2(e.target.value)} type="password"/>
                     </div>
                     <div className="sign-up-btn-holder">
-                        <button onClick={(e) => signUp(e) } disabled={!formValid} id="sign-up-btn" className="filled" type="submit">Sign Up</button>
+                        <button onClick={(e) => signUp(e) } disabled={!formValid} id="sign-up-btn" className="filled" type="submit">
+                            {
+                                !signupLoading ? ('Sign Up') : <LoadingWheel  color="white" size="18px" borderTickness="2px" />
+                            }
+                        </button>
                     </div>
                     <div className="already-account">
                         <p>Already have an accont? <span onClick={() => formSwitch(true)} className="login-clink">Login</span></p>

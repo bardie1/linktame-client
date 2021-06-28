@@ -62,3 +62,7 @@
     height: 40px;
     font-size: 18px;
 }
+
+.claim-name-form-error-holder {
+    margin-bottom: 20px;
+}
