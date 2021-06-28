@@ -83,7 +83,7 @@ export const SetName = () => {
                             </div>
                             <input onChange={e => setLink(e.target.value)} className="input-item set-name-input" type="text" placeholder="example"/>
                             <div className="input-item input-group-suffix">
-                                {loading && <LoadingWheel />}
+                                {loading && <LoadingWheel color="grey" size="18px" borderTickness="2px" />}
                             </div>
                         </div>
                     </div>

@@ -13,7 +13,7 @@
 
 .login-header {
     color: var(--purple);
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 .login-form {
@@ -60,4 +60,8 @@
 .login-btn-holder > button {
     height: 40px;
     font-size: 18px;
+}
+
+.login-form-error-holder {
+    margin-bottom: 20px;
 }

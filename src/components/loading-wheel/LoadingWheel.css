@@ -1,9 +1,7 @@
 .loading-wheel-loader {
     display: inline-block;
-    height: 18px;
-    width: 18px;
     border-radius: 50%;
-    border-top: 2px solid grey;
+    border-top:solid;
     animation: spin 1s linear infinite;
 }
 

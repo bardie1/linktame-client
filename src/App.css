@@ -79,3 +79,7 @@ button:disabled {
 button.filled:hover:not(:disabled) {
   background-color: var(--darkPurple);
 }
+
+button:active {
+  transform: scale(0.97);
+}

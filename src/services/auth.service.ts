@@ -4,7 +4,6 @@ import jwt from 'jwt-decode';
 import base64 from 'base-64';
 
 const login = async (user: UserSignUpLogin) => {
-    console.log(user);
     let res = await fetch(env.url + 'auth/login', {
         method: 'POST',
         headers: {
@@ -12,24 +11,21 @@ const login = async (user: UserSignUpLogin) => {
             'Authorization': 'Basic ' + base64.encode(user.email + ":" + user.password),
         }
     })
-    .then(response => {console.log(response); return response.json()})
+    .then(response => response.json())
     .then(data => {
-        console.log(data);
         if (data.successful === "false") {
-            throw new Error (data.message);
+            data.message = "Login details are incorrect";
+            return data;
         }
         const token = data.token;
         const user = jwt(token);
-        console.log(user);
         data.user = user;
         console.log('Success:', data);
         return data;
     })
     .catch((error) => {
-        console.error('Error:', error);
         return error;
     })
-
     return res;
 }
 

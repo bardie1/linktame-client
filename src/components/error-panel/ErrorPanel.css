@@ -1,0 +1,7 @@
+.error-panel-container {
+    background-color: rgb(255, 242, 242);
+    border: 1px solid rgb(189, 76, 76);
+    color: rgb(189, 76, 76);
+    border-radius: 5px;
+    padding: 10px;
+}
