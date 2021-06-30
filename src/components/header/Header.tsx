@@ -49,7 +49,7 @@ export const Header = () => {
                 </div>
                 { openSettingPopup && (
                 <div className="setting-popup-holder">
-                    <SettingsPopup clickedOutside={onOutsideClick} />
+                    <SettingsPopup linkName={linkName} clickedOutside={onOutsideClick} />
                 </div>) }
             </div>
         </div>
