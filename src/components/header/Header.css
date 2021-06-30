@@ -19,7 +19,7 @@
 }
 
 .header-settings-container {
-    width: 200px;
+    width: fit-content;
     display: flex;
     align-items: center;
 }
@@ -36,18 +36,44 @@
    
 }
 
+.header-link-copy-holder {
+    display: flex;
+    align-items: center;
+    background-color: rgb(224, 224, 224);
+    border-radius: 5px;
+    padding-right: 4px;
+}
+
+.header-link-holder {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.header-copy-holder > button {
+    padding: 8px 10px 8px 10px;
+    height: 100% !important;
+}
+
+
+
 .setting-popup-holder {
     position: absolute;
     top: 66px;
     right: 5px;
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 530px) {
     .header-user-name-holder {
         display: none;
     }
 
     .header-account-icon-holder {
         margin-left: auto;
+    }
+
+    .header-link-copy-holder {
+        display: none;
     }
 }

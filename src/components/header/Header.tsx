@@ -8,16 +8,34 @@ import { SettingsPopup } from '../settings-popup/SettingsPopup';
 export const Header = () => {
 
     const [openSettingPopup, setOpenSettingsPopup] = useState<boolean>(false);
+    const [buttonText, setButtonText ] = useState<string>('Copy');
     const user = useSelector(selectUser)
+    const [linkName, setLinkName ] = useState<string>(`linkta.me/${user.name}`);
 
     const onOutsideClick = () => {
         setOpenSettingsPopup(false);
+    }
+
+    const copyToClipBoard = () => {
+        setButtonText("Copied!")
+        navigator.clipboard.writeText(linkName);
+        setTimeout(() => {
+            setButtonText("Copy");
+        }, 3000);
     }
 
     return (
         <div className="header-container">
             <div className="header-logo-container">
                 LinktaMe
+            </div>
+            <div className="header-link-copy-holder">
+                <div className="header-link-holder">
+                    linkta.me/{user.name}
+                </div>
+                <div className="header-copy-holder">
+                    <button className="filled" onClick={() => copyToClipBoard()} type="submit">{buttonText}</button>
+                </div>
             </div>
             <div className="header-settings-container">
                 <div className="header-user-name-holder">
