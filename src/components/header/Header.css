@@ -41,3 +41,13 @@
     top: 66px;
     right: 5px;
 }
+
+@media only screen and (max-width: 500px) {
+    .header-user-name-holder {
+        display: none;
+    }
+
+    .header-account-icon-holder {
+        margin-left: auto;
+    }
+}
