@@ -3,13 +3,13 @@
     border: 1px solid var(--purple);
     border-radius: 5px;
     align-items: center;
+    background-color: var(--lightPurple);
     max-height: 38px;
     overflow: hidden;
 }
 
 .set-name-container {
-    margin-top: auto;
-    margin-bottom: auto;
+    margin: auto;
     width: 30%;
     height: fit-content;
     min-width: 300px;
