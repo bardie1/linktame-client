@@ -1,0 +1,12 @@
+.link-container {
+    background-color: white;
+    text-align: center;
+    padding: 1em;
+    box-shadow: 1px 1px 1px 1px rgba(138, 0, 223, 0.103);
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+
+    line-height: 1.5em;
+    max-width: inherit;
+}

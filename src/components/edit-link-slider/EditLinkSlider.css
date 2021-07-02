@@ -1,0 +1,45 @@
+.edit-link-slider-container {
+    padding-top: 30px;
+    overflow: hidden;
+    justify-self: flex-end;
+    position: sticky;
+    top: 0;
+    right: 0;
+    height: 100%;
+    max-height: 100%;
+    background-color: rgb(255, 255, 255);
+    width: 0%;
+    margin-left: 0px;
+    transition: width 0.3s ease;
+}
+
+.edit-link-slider-container.open {
+    background-color: rgb(255, 255, 255);
+    width: 30%;
+    transition: width 0.3s ease;
+    box-shadow: -1px -1px 5px 1px rgba(207, 207, 207, 0.315);
+}
+
+.edit-link-slider-form-container > form > .input-holder {
+    width: 90%;
+    margin-bottom: 30px;
+}
+
+.edit-link-slider-form-container > form {
+    align-items: center;
+}
+
+.edit-link-slider-form-input {
+    padding: 10px;
+}
+input.edit-link-slider-form-input::placeholder {
+    font-size: small;
+}
+
+.edit-link-slider-button-holder {
+    width: 90%;
+}
+
+.edit-link-slider-button-holder > button {
+    height: 30px;
+}
