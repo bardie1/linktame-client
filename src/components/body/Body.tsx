@@ -4,13 +4,16 @@ import { linkService } from "../../services/link.service";
 import { LinksList } from "../linksList/LinksList";
 import { Link } from "../link/Link";
 import { EditLinkSlider } from "../edit-link-slider/EditLinkSlider";
+import { LoadingWheel } from "../loading-wheel/LoadingWheel";
 import "./Body.css";
-import { current } from '@reduxjs/toolkit';
+
+
 export const Body = () => {
 
     const [editLinkOpen, setEditLinkOpen] = useState<boolean>(false);
     const [links, setLinks] = useState<LinkDto[]>([]);
     const [currentLink, setCurrentLink] = useState<LinkDto | null>(null);
+    const [linkListLoading, setLinkListLoading] = useState<boolean>(false);
 
     const newLink: LinkDto = {
         link: '',
@@ -28,9 +31,6 @@ export const Body = () => {
         getLinks();
     }, [])
 
-    useEffect(() => {
-        console.log(currentLink);
-    }, [currentLink]);
 
     useEffect(() => {
         if (currentLink) {
@@ -63,17 +63,30 @@ export const Body = () => {
         }
     }
 
+    const editLink = (link: LinkDto) => {
+        setEditLinkOpen(true);
+        setCurrentLink(link);
+    }
+
+    const closeSlider = () => {
+        setEditLinkOpen(false);
+        setCurrentLink(null);
+    }
+
     const getLinks = async() => {
+        setLinkListLoading(true);
         return new Promise(async (resolve, reject) => {
             let res = await linkService.getLinks();
             if (res.successful === "true") {
                 let resLinks = [...res.links];
                 console.log(resLinks);
                 setLinks(resLinks);
+                setLinkListLoading(false);
                 resolve(true)
                 console.log(res)
                 console.log(links, "HERE");
             } else {
+                setLinkListLoading(false);
                 reject(true);
                 console.log(res);
             }
@@ -82,14 +95,23 @@ export const Body = () => {
 
     return (
         <div className="body-container">
-            <LinksList onNewLinkClick={newLinkClicked} >
-                { links.map(l => {
-                    return <Link key={l.public_id} link={l}/>
-                })}
-                { (currentLink && !currentLink?.public_id) && <Link link={currentLink} />}
-            </LinksList>
-            { currentLink && <EditLinkSlider setCurrentLinkName={setName} setCurrentLinkUrl={setUrl} createLink={createLink} currentLink={currentLink} open={editLinkOpen} />}
+
+            {(linkListLoading) ? (
+                <div className="body-link-list-loader-holder">
+                    <LoadingWheel color="rgb(137, 0, 223)" size="100px" borderTickness="4px" />
+                </div>
+            ) : (
+                <LinksList onNewLinkClick={newLinkClicked} >
+                    { links.map(l => {
+                        return <Link selected={(currentLink?.public_id === l.public_id) ? true : false} onClick={editLink} key={l.public_id} link={l}/>
+                    })}
+                    { (currentLink && !currentLink?.public_id) && <Link selected={false} onClick={editLink} link={currentLink} />}
+                </LinksList>
+
+            )}
+
             
+        { currentLink && <EditLinkSlider close={closeSlider} setCurrentLinkName={setName} setCurrentLinkUrl={setUrl} createLink={createLink} currentLink={currentLink} open={editLinkOpen} />}
         </div>
     )
 }

@@ -35,7 +35,7 @@ const createLink = async (link: LinkDto[]) => {
     }
     console.log(b);
     httpPostConfig.body = JSON.stringify(b);
-    let res = await fetch(env.url + "auth/user/link", httpPostConfig)
+    let res = await fetch(env.url + "user/link", httpPostConfig)
                 .then(response => response.json())
                 .catch(err => {
                     return err
@@ -45,7 +45,8 @@ const createLink = async (link: LinkDto[]) => {
 }
 
 const getLinks = async () => {
-    let res = await fetch(env.url + "auth/user/link", httpGetConfig)
+    console.log(httpGetConfig);
+    let res = await fetch(env.url + "user/link", httpGetConfig)
                 .then(response => response.json())
                 .catch(err => err);
 

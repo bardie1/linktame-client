@@ -11,3 +11,9 @@
 .add-edit-link-component-holder{
     
 }
+
+.body-link-list-loader-holder {
+    width: fit-content;
+    height: fit-content;
+    margin: auto;
+}
