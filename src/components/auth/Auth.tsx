@@ -9,10 +9,6 @@ export const Auth = () => {
 
     const [ loginScreen, setLoginScreen ] = useState<Boolean>(true);
 
-    useEffect(() => {
-
-    }, [loginScreen])
-
     const changeScreen = (setLoginValue: boolean) => {
         setLoginScreen(setLoginValue);
     }
