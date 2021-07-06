@@ -24,6 +24,7 @@ const httpGetConfig = {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json',
+        'Authorization': 'Basic Og==',
         'x-access-token': (sessionService.getUserAsObj()) ? sessionService.getUserAsObj().token: null
     }
 }
