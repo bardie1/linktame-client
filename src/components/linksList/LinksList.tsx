@@ -2,12 +2,15 @@ import React from 'react';
 
 import "./LinksList.css";
 
+import MoodBadIcon from '@material-ui/icons/MoodBad';
+
 type LinksListProps = {
     children: any,
     onNewLinkClick: Function,
+    noLinks: boolean
 }
 
-export const LinksList = ({children, onNewLinkClick}: LinksListProps) => {
+export const LinksList = ({children, onNewLinkClick, noLinks}: LinksListProps) => {
 
     return (
         <div className="links-list-container">
@@ -21,7 +24,15 @@ export const LinksList = ({children, onNewLinkClick}: LinksListProps) => {
                     </div>
                 </div>
                 <div className="link-children-holder">
+                    {noLinks && (
+                        <div className="no-links-holder">
+                            <MoodBadIcon fontSize="large" /> <p>Your link list is empty. Go ahead and create your first link!</p>
+                        </div>
+                    )}
+                    
                     {children}
+        
+        
                 </div>
             </div>
         </div>
