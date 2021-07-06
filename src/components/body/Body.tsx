@@ -14,6 +14,7 @@ export const Body = () => {
     const [links, setLinks] = useState<LinkDto[]>([]);
     const [currentLink, setCurrentLink] = useState<LinkDto | null>(null);
     const [linkListLoading, setLinkListLoading] = useState<boolean>(false);
+    const [createLinkLoading, setCreateLinkLoading] = useState<boolean>(false);
 
     const newLink: LinkDto = {
         link: '',
@@ -54,12 +55,14 @@ export const Body = () => {
     }
 
     const createLink = async () => {
+        setCreateLinkLoading(true);
         if (currentLink) {
             let res = await linkService.createLink([currentLink]);
             console.log(res);
             if (res.successful === "true") {
                 getLinks();
             }
+            setCreateLinkLoading(false);
         }
     }
 
@@ -101,17 +104,19 @@ export const Body = () => {
                     <LoadingWheel color="rgb(137, 0, 223)" size="100px" borderTickness="4px" />
                 </div>
             ) : (
-                <LinksList onNewLinkClick={newLinkClicked} >
+
+                <LinksList noLinks={(links.length === 0 && !currentLink) ? true : false} onNewLinkClick={newLinkClicked} >
                     { links.map(l => {
                         return <Link selected={(currentLink?.public_id === l.public_id) ? true : false} onClick={editLink} key={l.public_id} link={l}/>
                     })}
-                    { (currentLink && !currentLink?.public_id) && <Link selected={false} onClick={editLink} link={currentLink} />}
+                    { (currentLink && !currentLink?.public_id) && <Link selected={true} onClick={editLink} link={currentLink} />}
                 </LinksList>
+
 
             )}
 
             
-        { currentLink && <EditLinkSlider close={closeSlider} setCurrentLinkName={setName} setCurrentLinkUrl={setUrl} createLink={createLink} currentLink={currentLink} open={editLinkOpen} />}
+        { currentLink && <EditLinkSlider linkLoading={createLinkLoading} close={closeSlider} setCurrentLinkName={setName} setCurrentLinkUrl={setUrl} createLink={createLink} currentLink={currentLink} open={editLinkOpen} />}
         </div>
     )
 }
