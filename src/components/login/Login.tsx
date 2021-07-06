@@ -29,6 +29,10 @@ export const Login = ({ formSwitch }: LoginProps) => {
         } else {
             setFormValid(false);
         }
+
+        return () => {
+            setFormValid(false);
+        }
     }, [email, password])
 
     const loginToApp = async (e: any) => {
