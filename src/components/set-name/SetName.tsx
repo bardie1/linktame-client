@@ -62,13 +62,25 @@ export const SetName = () => {
         }
     }
 
-    useEffect(() => {
+    const formatLink = (text: string): string =>  {
+        return text.replace(" ","-").toLowerCase();
+    }
 
-    }, [linkAvailable])
+    useEffect(() => {
+        if (valid) {
+            setErrorMessage('');
+        } else {
+            if (link !== '') {
+                setErrorMessage("Your link may only contain numbers, letters and dashes");
+            }
+        }
+    }, [valid])
 
     useEffect(() => {
-        if (debouncedLinkName) {
-            isLinkValid(debouncedLinkName);
+        if (/^([a-zA-Z0-9 -]+)$/.test(debouncedLinkName)) {
+            setValid(true)
+        } else {
+            setValid(false);
         }
     }, [debouncedLinkName])
 
@@ -89,14 +101,14 @@ export const SetName = () => {
                             <div className="input-item input-group-prefix">
                                 linkta.me/
                             </div>
-                            <input onChange={e => setLink(e.target.value)} className="input-item set-name-input" type="text" placeholder="example"/>
+                            <input value={link || ''} onChange={e => setLink(formatLink(e.target.value))} pattern="/^([a-zA-Z0-9 -]+)$/" className="input-item set-name-input" type="text" placeholder="example"/>
                             <div className="input-item input-group-suffix">
                                 {loading && <LoadingWheel color="grey" size="18px" borderTickness="2px" />}
                             </div>
                         </div>
                     </div>
                     <div className="set-name-button-holder">
-                        <button onClick={ e => claimLink(e)} className="filled" type="submit">
+                        <button disabled={!valid} onClick={ e => claimLink(e)} className="filled" type="submit">
                             {
                                 !loading ? ('Claim LinktaMe') : <LoadingWheel  color="white" size="18px" borderTickness="2px" />
                             }

@@ -4,7 +4,7 @@ import './SignUp.css'
 import { login } from '../../redux/slicers/userSlicer';
 
 import { useDispatch } from 'react-redux';
-
+import { useValidEmail } from "../../hooks/validEmail.hook";
 import { sessionService }  from '../../services/session.service';
 import { authService }  from '../../services/auth.service';
 import {UserSignUpLogin} from '../../models/userSIgnUpLogin'
@@ -28,13 +28,19 @@ export const SignUp = ({ formSwitch }: SignUpProps) => {
 
     const dispatch = useDispatch();
 
+    const validEmail = useValidEmail(email);
+
     useEffect(() => {
-        if (email && password && password2 && password === password2) {
+        setErrorMessage('');
+        if (email && validEmail && password && password2 && password === password2) {
             setFormValid(true);
         } else {
+            if (!validEmail && email !== '') {
+                setErrorMessage("Please enter in a valid email address");
+            }
             setFormValid(false);
         }
-    }, [email, password, password2])
+    }, [email, password, password2, validEmail])
 
 
     const signUp = async (e: any) => {
