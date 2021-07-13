@@ -34,8 +34,13 @@
 .link-children-holder {
     height: 75vh;
     max-height: 100%;
+    overflow-x: visible;
     overflow-y: scroll;
     padding-right: 20px;
+}
+
+.link-children-holder::-webkit-scrollbar {
+    display: none;
 }
 
 .no-links-holder {

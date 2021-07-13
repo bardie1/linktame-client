@@ -44,17 +44,19 @@ export const Login = ({ formSwitch }: LoginProps) => {
             password: password,
         }
         let res = await authService.login(details)
-        if (res.successful === "true") {
+        if (res.successful) {
             dispatch(login({
                 public_id: res.user.public_id,
                 token: res.token,
                 name: res.user.name,
-                email: res.user.email
+                email: res.user.email,
+                exp: res.user.exp,
             }));
             sessionService.setUser({public_id: res.user.public_id, 
                 token: res.token,
                 name: res.user.name,
-                email: res.user.email});
+                email: res.user.email,
+                exp: res.user.exp});
         } else { 
             setErrorMessage(res.message);
         }

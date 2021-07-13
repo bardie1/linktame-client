@@ -12,10 +12,11 @@ type EditLinkSliderProp = {
     setCurrentLinkUrl: Function,
     setCurrentLinkName: Function,
     close: Function,
-    linkLoading: boolean
+    linkLoading: boolean,
+    valid: boolean
 }
 
-export const EditLinkSlider = ({linkLoading, open, currentLink, createLink, setCurrentLinkUrl, setCurrentLinkName, close}: EditLinkSliderProp) => {
+export const EditLinkSlider = ({valid, linkLoading, open, currentLink, createLink, setCurrentLinkUrl, setCurrentLinkName, close}: EditLinkSliderProp) => {
 
     const [sliderClass, setSliderClass ] = useState<string>("edit-link-slider-container");
 
@@ -48,7 +49,7 @@ export const EditLinkSlider = ({linkLoading, open, currentLink, createLink, setC
                         <input value={currentLink.link} onChange={e => setCurrentLinkUrl(e.target.value)} className="edit-link-slider-form-input" type="text" placeholder="E.g. My Youtube Channel"/>
                     </div>
                     <div className="edit-link-slider-button-holder">
-                        <button className="filled">{(linkLoading) ? <LoadingWheel color="white" size="18px" borderTickness="2px"  /> : (currentLink.public_id) ? 'Update Link' : 'Create Link'}</button>
+                        <button disabled={!valid} className="filled">{(linkLoading) ? <LoadingWheel color="white" size="18px" borderTickness="2px"  /> : (currentLink.public_id) ? 'Update Link' : 'Create Link'}</button>
                     </div>
                 </form>
             </div>

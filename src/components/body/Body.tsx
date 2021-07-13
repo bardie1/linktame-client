@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import LinkDto from '../../models/link';
+import { NotificationConfig } from '../../models/notificationConfig';
 import { linkService } from "../../services/link.service";
 import { LinksList } from "../linksList/LinksList";
 import { Link } from "../link/Link";
 import { EditLinkSlider } from "../edit-link-slider/EditLinkSlider";
 import { LoadingWheel } from "../loading-wheel/LoadingWheel";
+import { Notification } from "../notification/Notification";
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import "./Body.css";
 
 
@@ -15,6 +18,8 @@ export const Body = () => {
     const [currentLink, setCurrentLink] = useState<LinkDto | null>(null);
     const [linkListLoading, setLinkListLoading] = useState<boolean>(false);
     const [createLinkLoading, setCreateLinkLoading] = useState<boolean>(false);
+    const [valid, setValid] = useState<boolean>(false);
+    const [notificationConfig, setNotificationConfig ] = useState<NotificationConfig | null>(null)
 
     const newLink: LinkDto = {
         link: '',
@@ -29,7 +34,17 @@ export const Body = () => {
     }
 
     useEffect(() => {
-        getLinks();
+        if (currentLink?.link !== '' && currentLink?.link_name !== '' ){
+            setValid(true);
+        } else {
+            setValid(false)
+        }
+    }, [currentLink])
+
+    useEffect(() => {
+        setTimeout(() => {
+            getLinks();
+        }, 100)
     }, [])
 
 
@@ -58,9 +73,18 @@ export const Body = () => {
         setCreateLinkLoading(true);
         if (currentLink) {
             let res = await linkService.createLink([currentLink]);
-            console.log(res);
-            if (res.successful === "true") {
+            if (res.successful) {
+                setNotificationConfig({
+                    type: 'success',
+                    Icon: CheckCircleOutlineIcon,
+                    message: 'Link Created Successfully'
+                })
+                setTimeout(()  => {
+                    setNotificationConfig(null);
+                }, 5000);
                 getLinks();
+            } else {
+                
             }
             setCreateLinkLoading(false);
         }
@@ -80,20 +104,42 @@ export const Body = () => {
         setLinkListLoading(true);
         return new Promise(async (resolve, reject) => {
             let res = await linkService.getLinks();
-            if (res.successful === "true") {
+            if (res.successful) {
                 let resLinks = [...res.links];
-                console.log(resLinks);
                 setLinks(resLinks);
                 setLinkListLoading(false);
                 resolve(true)
-                console.log(res)
-                console.log(links, "HERE");
             } else {
                 setLinkListLoading(false);
                 reject(true);
-                console.log(res);
             }
         })
+    }
+
+    const deleteLink = async (linkName: string, linkPubId: string) => {
+       let res = await linkService.deleteLink(linkPubId, linkName);
+
+       if (res.successful) {
+           setEditLinkOpen(false);
+        setNotificationConfig({
+            type: 'success',
+            Icon: CheckCircleOutlineIcon,
+            message: 'Link Deleted Successfully'
+        })
+        setTimeout(()  => {
+            setNotificationConfig(null);
+        }, 5000);
+           getLinks();
+       } else {
+        setNotificationConfig({
+            type: 'error',
+            Icon: CheckCircleOutlineIcon,
+            message: 'Link Deletion Unsuccessful'
+        })
+        setTimeout(()  => {
+            setNotificationConfig(null);
+        }, 5000);
+       }
     }
 
     return (
@@ -107,7 +153,7 @@ export const Body = () => {
 
                 <LinksList noLinks={(links.length === 0 && !currentLink) ? true : false} onNewLinkClick={newLinkClicked} >
                     { links.map(l => {
-                        return <Link selected={(currentLink?.public_id === l.public_id) ? true : false} onClick={editLink} key={l.public_id} link={l}/>
+                        return <Link deleteLink={deleteLink} selected={(currentLink?.public_id === l.public_id) ? true : false} onClick={editLink} key={l.public_id} link={l}/>
                     })}
                     { (currentLink && !currentLink?.public_id) && <Link selected={true} onClick={editLink} link={currentLink} />}
                 </LinksList>
@@ -116,7 +162,9 @@ export const Body = () => {
             )}
 
             
-        { currentLink && <EditLinkSlider linkLoading={createLinkLoading} close={closeSlider} setCurrentLinkName={setName} setCurrentLinkUrl={setUrl} createLink={createLink} currentLink={currentLink} open={editLinkOpen} />}
+        { currentLink && <EditLinkSlider valid={valid} linkLoading={createLinkLoading} close={closeSlider} setCurrentLinkName={setName} setCurrentLinkUrl={setUrl} createLink={createLink} currentLink={currentLink} open={editLinkOpen} />}
+        { (notificationConfig) &&
+                <Notification type={notificationConfig.type} Icon={notificationConfig.Icon} message={notificationConfig.message} />}
         </div>
     )
 }

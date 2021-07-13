@@ -20,6 +20,15 @@ const httpPutConfig = {
     }
 }
 
+const httpDeleteConfig = {
+    method: 'DELETE',
+    headers: {
+        'Content-Type': 'application/json',
+        'x-access-token': (sessionService.getUserAsObj()) ? sessionService.getUserAsObj().token: null
+    },
+    body: '',
+}
+
 const httpGetConfig = {
     method: 'GET',
     headers: {
@@ -54,8 +63,42 @@ const getLinks = async () => {
     return res;
 }
 
+const deleteLink = async (linkPublicId: string, linkName: string) => {
+    let body = {
+        link_name: linkName,
+        public_id: linkPublicId,
+    }
+
+    httpDeleteConfig.body = JSON.stringify(body);
+    let res = await fetch(env.url + "user/link", httpDeleteConfig)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.successsful){
+                        data.message = "Unable to delete link";
+                        return data;
+                    }
+
+                    return data;
+                })
+                .catch(err => err);
+    return res;
+}
+
+const updateLink = async () => {
+    let res = await fetch(env.url + "user/link", httpPutConfig)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.successsful) {
+                        data.message = "Unable to update Link";
+                    }
+                    return data;
+                })
+                .catch(err => err);
+}
+
 export const linkService = {
     createLink,
     getLinks,
+    deleteLink,
 }
 
