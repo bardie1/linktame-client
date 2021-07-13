@@ -54,12 +54,16 @@ const createLink = async (link: LinkDto[]) => {
 
 }
 
-const getLinks = async () => {
+const getLinks = async (token?: string) => {
     console.log(httpGetConfig);
+    if (token) {
+        httpGetConfig.headers["x-access-token"] = token;
+    }
     let res = await fetch(env.url + "user/link", httpGetConfig)
-                .then(response => response.json())
+                .then(response => {
+                    return response.json()})
                 .catch(err => err);
-
+    console.log(res);
     return res;
 }
 

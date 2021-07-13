@@ -67,21 +67,34 @@ export const SetName = () => {
     }
 
     useEffect(() => {
+        let mounted = true;
         if (valid) {
-            setErrorMessage('');
+            if (mounted) {
+                setErrorMessage('');
+            }
         } else {
             if (link !== '') {
-                setErrorMessage("Your link may only contain numbers, letters and dashes");
+                if (mounted) {
+                    setErrorMessage("Your link may only contain numbers, letters and dashes");
+                }
             }
         }
+
+        return () => {mounted = false};
     }, [valid])
 
     useEffect(() => {
-        if (/^([a-zA-Z0-9 -]+)$/.test(debouncedLinkName)) {
-            setValid(true)
-        } else {
-            setValid(false);
+        let mounted = true;
+
+        if (mounted) {
+            if (/^([a-zA-Z0-9 -]+)$/.test(debouncedLinkName)) {
+                setValid(true)
+            } else {
+                setValid(false);
+            }
         }
+
+        return () => {mounted = false};
     }, [debouncedLinkName])
 
 

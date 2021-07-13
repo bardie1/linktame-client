@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import LinkDto from '../../models/link';
 import { NotificationConfig } from '../../models/notificationConfig';
 import { linkService } from "../../services/link.service";
@@ -9,6 +10,7 @@ import { LoadingWheel } from "../loading-wheel/LoadingWheel";
 import { Notification } from "../notification/Notification";
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import "./Body.css";
+import { selectUser } from '../../redux/slicers/userSlicer';
 
 
 export const Body = () => {
@@ -20,6 +22,8 @@ export const Body = () => {
     const [createLinkLoading, setCreateLinkLoading] = useState<boolean>(false);
     const [valid, setValid] = useState<boolean>(false);
     const [notificationConfig, setNotificationConfig ] = useState<NotificationConfig | null>(null)
+
+    const user = useSelector(selectUser);
 
     const newLink: LinkDto = {
         link: '',
@@ -34,24 +38,37 @@ export const Body = () => {
     }
 
     useEffect(() => {
-        if (currentLink?.link !== '' && currentLink?.link_name !== '' ){
-            setValid(true);
-        } else {
-            setValid(false)
+        let mounted = true;
+
+        if (mounted) {
+            if (currentLink?.link !== '' && currentLink?.link_name !== '' ){
+                setValid(true);
+            } else {
+                setValid(false)
+            }
         }
+
+        return () => {mounted = false}
     }, [currentLink])
 
     useEffect(() => {
-        setTimeout(() => {
-            getLinks();
-        }, 100)
+        let mounted = true;
+        getLinks(mounted);
+
+        return () => {mounted = false};
     }, [])
 
 
     useEffect(() => {
-        if (currentLink) {
-            setCurrentLink(links[links.length - 1]);
+        let mounted = true;
+        
+        if (mounted) {
+            if (currentLink) {
+                setCurrentLink(links[links.length - 1]);
+            }
         }
+
+        return () => {mounted = false}
     }, [links]);
 
     const setName = (name: string) => {
@@ -82,7 +99,7 @@ export const Body = () => {
                 setTimeout(()  => {
                     setNotificationConfig(null);
                 }, 5000);
-                getLinks();
+                getLinks(true);
             } else {
                 
             }
@@ -100,20 +117,22 @@ export const Body = () => {
         setCurrentLink(null);
     }
 
-    const getLinks = async() => {
+    const getLinks = async(mounted: boolean) => {
         setLinkListLoading(true);
-        return new Promise(async (resolve, reject) => {
-            let res = await linkService.getLinks();
-            if (res.successful) {
-                let resLinks = [...res.links];
-                setLinks(resLinks);
+        let res = await linkService.getLinks(user.token);
+        console.log(res);
+        if (res.successful) {
+            if (mounted) {
+                setLinks([...res.links]);
                 setLinkListLoading(false);
-                resolve(true)
-            } else {
-                setLinkListLoading(false);
-                reject(true);
             }
-        })
+            
+        } else {
+            if (mounted) {
+                setLinkListLoading(false);
+            }
+            
+        }
     }
 
     const deleteLink = async (linkName: string, linkPubId: string) => {
@@ -129,7 +148,7 @@ export const Body = () => {
         setTimeout(()  => {
             setNotificationConfig(null);
         }, 5000);
-           getLinks();
+           getLinks(true);
        } else {
         setNotificationConfig({
             type: 'error',

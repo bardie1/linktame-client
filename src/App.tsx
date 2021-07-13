@@ -16,21 +16,28 @@ function App() {
   const validSession = useValidSession(user);
 
   useEffect(() => {
+    let mounted = true;
     console.log(validSession);
     if (validSession) {
       if (userStorage) {
         let user2 = JSON.parse(userStorage);
-        dispatch(login({
-          public_id: user2.public_id,
-          token: user2.token,
-          name: user2.name,
-          email: user2.email,
-          exp: user2.exp
-        }));
+        if (mounted) {
+          dispatch(login({
+            public_id: user2.public_id,
+            token: user2.token,
+            name: user2.name,
+            email: user2.email,
+            exp: user2.exp
+          }));
+        }
       }
     } else {
-      dispatch(logout());
+      if (mounted) {
+        dispatch(logout());
+      }
     }
+
+    return () => { mounted = false}
   }, [validSession])
 
 

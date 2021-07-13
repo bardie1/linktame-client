@@ -21,10 +21,17 @@ export const EditLinkSlider = ({valid, linkLoading, open, currentLink, createLin
     const [sliderClass, setSliderClass ] = useState<string>("edit-link-slider-container");
 
     useEffect(() => {
-        if (open) {
-            setSliderClass("edit-link-slider-container open");
-        } else {
-            setSliderClass("edit-link-slider-container");
+        let mounted = true;
+        if (mounted) {
+            if (open) {
+                setSliderClass("edit-link-slider-container open");
+            } else {
+                setSliderClass("edit-link-slider-container");
+            }
+        }
+
+        return () => {
+            mounted = false;
         }
     }, [open])
 
