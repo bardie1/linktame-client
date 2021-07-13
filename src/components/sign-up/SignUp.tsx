@@ -56,7 +56,7 @@ export const SignUp = ({ formSwitch }: SignUpProps) => {
 
         let res = await authService.signUp(details)
 
-        if (res.successful === "true") {
+        if (res.successful) {
             dispatch(login({
                 public_id: res.user.public_id,
                 token: res.token,

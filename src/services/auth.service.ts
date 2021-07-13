@@ -13,7 +13,7 @@ const login = async (user: UserSignUpLogin) => {
     })
     .then(response => response.json())
     .then(data => {
-        if (data.successful === "false") {
+        if (!data.successful) {
             data.message = "Login details are incorrect";
             return data;
         }
@@ -39,7 +39,7 @@ const signUp = async (user: UserSignUpLogin) => {
     })
     .then(response => response.json())
     .then(data => {
-        if (data.successful === "false") {
+        if (!data.successful) {
             data.message = "An account with this email already exists";
             return data
         }

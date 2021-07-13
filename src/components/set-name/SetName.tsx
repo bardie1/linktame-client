@@ -42,7 +42,7 @@ export const SetName = () => {
             name: link
         }
         let res = await userService.updateUser(u);
-        if (res.successful === 'true') {
+        if (res.successful) {
             dispatch(login({
                 public_id: res.user.public_id,
                 token: res.token,

@@ -38,7 +38,7 @@ const updateUser = async (user: User) => {
     .then(response => response.json())
     .then(data => {
 
-        if (data.successful === "false") {
+        if (!data.successful) {
             data.message = "Unfortunately this link is unavailable. Please choose another one.";
             return data;
         }
