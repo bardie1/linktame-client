@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, createRef } from 'react';
 
 import "./LinksList.css";
 
@@ -12,6 +12,23 @@ type LinksListProps = {
 
 export const LinksList = ({children, onNewLinkClick, noLinks}: LinksListProps) => {
 
+    const bottomRef = createRef<HTMLDivElement>();
+    const firstUpdate = useRef(true);
+
+    const scrollToBottom = () => {
+       bottomRef.current?.scrollIntoView({
+           behavior: "smooth",
+           block: "end"
+       })
+    }
+
+    useEffect(() => {
+        if (firstUpdate.current) {
+            firstUpdate.current = false;
+            return;
+        }
+       scrollToBottom();
+    }, [children])
     return (
         <div className="links-list-container">
             <div className="link-list-holder">
@@ -31,8 +48,8 @@ export const LinksList = ({children, onNewLinkClick, noLinks}: LinksListProps) =
                     )}
                     
                     {children}
-        
-        
+
+                    <div ref={bottomRef} className="list-bottom"></div>
                 </div>
             </div>
         </div>

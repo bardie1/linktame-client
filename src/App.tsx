@@ -3,10 +3,17 @@ import './App.css';
 
 import { Main } from './components/main/Main';
 import { Auth } from "./components/auth/Auth";
+import { PublicLink } from "./components/public-link/PublicLink";
 import { useDispatch, useSelector } from 'react-redux';
 import { sessionService } from './services/session.service';
 import { login, logout, selectUser } from './redux/slicers/userSlicer';
 import { useValidSession } from './hooks/validSession.hook';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 function App() {
 
@@ -42,15 +49,24 @@ function App() {
 
 
   return (
-    <div className="App">
-      {
-        user ? (
-          <Main />
-        ) : (
-          <Auth />
-        )
-      }
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/" exact={true}>
+          <div className="App">
+            {
+              user ? (
+                <Main />
+              ) : (
+                <Auth />
+              )
+            }
+          </div>
+        </Route>
+        <Route path="/:name">
+            <PublicLink />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
 

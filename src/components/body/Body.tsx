@@ -89,7 +89,7 @@ export const Body = () => {
     const createLink = async () => {
         setCreateLinkLoading(true);
         if (currentLink) {
-            let res = await linkService.createLink([currentLink]);
+            let res = await linkService.createLink([currentLink], user.token);
             if (res.successful) {
                 setNotificationConfig({
                     type: 'success',
@@ -136,7 +136,7 @@ export const Body = () => {
     }
 
     const deleteLink = async (linkName: string, linkPubId: string) => {
-       let res = await linkService.deleteLink(linkPubId, linkName);
+       let res = await linkService.deleteLink(linkPubId, linkName, user.token);
 
        if (res.successful) {
            setEditLinkOpen(false);

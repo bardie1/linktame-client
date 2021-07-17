@@ -34,15 +34,16 @@ const httpGetConfig = {
     headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Basic Og==',
-        'x-access-token': (sessionService.getUserAsObj()) ? sessionService.getUserAsObj().token: null
+        'x-access-token': ''
     }
 }
 
 
-const createLink = async (link: LinkDto[]) => {
+const createLink = async (link: LinkDto[], token:string) => {
     let b = {
         links : link,
     }
+    httpPostConfig.headers["x-access-token"] = token;
     console.log(b);
     httpPostConfig.body = JSON.stringify(b);
     let res = await fetch(env.url + "user/link", httpPostConfig)
@@ -67,12 +68,12 @@ const getLinks = async (token?: string) => {
     return res;
 }
 
-const deleteLink = async (linkPublicId: string, linkName: string) => {
+const deleteLink = async (linkPublicId: string, linkName: string, token: string) => {
     let body = {
         link_name: linkName,
         public_id: linkPublicId,
     }
-
+    httpDeleteConfig.headers["x-access-token"] = token;
     httpDeleteConfig.body = JSON.stringify(body);
     let res = await fetch(env.url + "user/link", httpDeleteConfig)
                 .then(response => response.json())
@@ -100,9 +101,18 @@ const updateLink = async () => {
                 .catch(err => err);
 }
 
+const getLinksByName = async (name: string) => {
+    let res = await fetch(env.url + `links/${name}`, httpGetConfig)
+                .then(response => (response.json()))
+                .catch(err => (err.message))
+    
+    return res;
+}
+
 export const linkService = {
     createLink,
     getLinks,
     deleteLink,
+    getLinksByName
 }
 

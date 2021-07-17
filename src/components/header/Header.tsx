@@ -31,7 +31,7 @@ export const Header = () => {
             </div>
             <div className="header-link-copy-holder">
                 <div className="header-link-holder">
-                    linkta.me/{user.name}
+                    linktame.herokuapp.com/{user.name}
                 </div>
                 <div className="header-copy-holder">
                     <button className="filled" onClick={() => copyToClipBoard()} type="submit">{buttonText}</button>
