@@ -13,11 +13,12 @@ const httpPostConfig = {
 }
 
 const httpPutConfig = {
-    method: 'POST',
+    method: 'PUT',
     headers: {
         'Content-Type': 'application/json',
         'x-access-token': (sessionService.getUserAsObj()) ? sessionService.getUserAsObj().token: null
-    }
+    },
+    body: '',
 }
 
 const httpDeleteConfig = {
@@ -89,16 +90,26 @@ const deleteLink = async (linkPublicId: string, linkName: string, token: string)
     return res;
 }
 
-const updateLink = async () => {
+const updateLink = async (link: LinkDto, token: string) => {
+    console.log(link);
+    httpPutConfig.headers["x-access-token"] = token;
+    let body = {
+        links: [link]
+    }
+
+    httpPutConfig.body = JSON.stringify(body);
     let res = await fetch(env.url + "user/link", httpPutConfig)
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data);
                     if (!data.successsful) {
                         data.message = "Unable to update Link";
                     }
                     return data;
                 })
-                .catch(err => err);
+                .catch(err => (err));
+
+    return res;
 }
 
 const getLinksByName = async (name: string) => {
@@ -113,6 +124,7 @@ export const linkService = {
     createLink,
     getLinks,
     deleteLink,
-    getLinksByName
+    getLinksByName,
+    updateLink
 }
 

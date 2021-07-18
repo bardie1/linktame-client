@@ -9,6 +9,7 @@ type EditLinkSliderProp = {
     open: boolean,
     currentLink: linkDto,
     createLink: Function,
+    updateLink: Function,
     setCurrentLinkUrl: Function,
     setCurrentLinkName: Function,
     close: Function,
@@ -16,7 +17,7 @@ type EditLinkSliderProp = {
     valid: boolean
 }
 
-export const EditLinkSlider = ({valid, linkLoading, open, currentLink, createLink, setCurrentLinkUrl, setCurrentLinkName, close}: EditLinkSliderProp) => {
+export const EditLinkSlider = ({valid, linkLoading, open, currentLink, createLink, setCurrentLinkUrl, setCurrentLinkName, close, updateLink}: EditLinkSliderProp) => {
 
     const [sliderClass, setSliderClass ] = useState<string>("edit-link-slider-container");
 
@@ -37,7 +38,11 @@ export const EditLinkSlider = ({valid, linkLoading, open, currentLink, createLin
 
     const submitLink = (e: any) => {
         e.preventDefault();
-        createLink()
+        if (currentLink.public_id) {
+            updateLink();
+        } else {
+            createLink()
+        }
     }
 
     return (

@@ -9,6 +9,7 @@ import { EditLinkSlider } from "../edit-link-slider/EditLinkSlider";
 import { LoadingWheel } from "../loading-wheel/LoadingWheel";
 import { Notification } from "../notification/Notification";
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import "./Body.css";
 import { selectUser } from '../../redux/slicers/userSlicer';
 
@@ -107,6 +108,32 @@ export const Body = () => {
         }
     }
 
+    const updateLink = async () => {
+        setCreateLinkLoading(true);
+        if (currentLink) {
+            let res = await linkService.updateLink(currentLink, user.token);
+
+            if (res.successful) {
+                setCreateLinkLoading(false);
+                let config: NotificationConfig = {
+                    type: 'success',
+                    Icon: CheckCircleOutlineIcon,
+                    message: "Link has been updated successfully"
+                }
+                setNotificationConfig(config);
+                getLinks(true);
+            } else {
+                setCreateLinkLoading(false);
+                let config: NotificationConfig = {
+                    type: 'error',
+                    Icon: ErrorOutlineIcon,
+                    message: "Unable to update link"
+                }
+                setNotificationConfig(config);
+            }
+        }
+    }
+
     const editLink = (link: LinkDto) => {
         setEditLinkOpen(true);
         setCurrentLink(link);
@@ -152,7 +179,7 @@ export const Body = () => {
        } else {
         setNotificationConfig({
             type: 'error',
-            Icon: CheckCircleOutlineIcon,
+            Icon: ErrorOutlineIcon,
             message: 'Link Deletion Unsuccessful'
         })
         setTimeout(()  => {
@@ -181,7 +208,7 @@ export const Body = () => {
             )}
 
             
-        { currentLink && <EditLinkSlider valid={valid} linkLoading={createLinkLoading} close={closeSlider} setCurrentLinkName={setName} setCurrentLinkUrl={setUrl} createLink={createLink} currentLink={currentLink} open={editLinkOpen} />}
+        { currentLink && <EditLinkSlider updateLink={updateLink} valid={valid} linkLoading={createLinkLoading} close={closeSlider} setCurrentLinkName={setName} setCurrentLinkUrl={setUrl} createLink={createLink} currentLink={currentLink} open={editLinkOpen} />}
         { (notificationConfig) &&
                 <Notification type={notificationConfig.type} Icon={notificationConfig.Icon} message={notificationConfig.message} />}
         </div>
