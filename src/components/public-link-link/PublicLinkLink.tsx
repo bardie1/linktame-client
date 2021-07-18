@@ -17,8 +17,8 @@ export const PublicLinkLink = ({link}: PublicLinkLinkProps) => {
         window.open(url);    
     }
     return (
-        <div className="public-link-link-container">
-            <input title={link.link} type="button" className="public-link-button" onClick={() => {goToLink()}} value={link.link_name}/>
+        <div title={link.link} onClick={() => {goToLink()}} className="public-link-link-container">
+            {link.link_name}
         </div>
     )
 }

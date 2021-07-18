@@ -12,6 +12,7 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import "./Body.css";
 import { selectUser } from '../../redux/slicers/userSlicer';
+import { useValidSession } from "../../hooks/validSession.hook";
 
 
 export const Body = () => {
@@ -91,6 +92,7 @@ export const Body = () => {
         setCreateLinkLoading(true);
         if (currentLink) {
             let res = await linkService.createLink([currentLink], user.token);
+            console.log(res);
             if (res.successful) {
                 setNotificationConfig({
                     type: 'success',
@@ -102,7 +104,11 @@ export const Body = () => {
                 }, 5000);
                 getLinks(true);
             } else {
-                
+                setNotificationConfig({
+                    type: 'error',
+                    Icon: ErrorOutlineIcon,
+                    message: `Unable to create link: ${res.message}`
+                })
             }
             setCreateLinkLoading(false);
         }
