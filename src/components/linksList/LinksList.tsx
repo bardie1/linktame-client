@@ -27,7 +27,7 @@ export const LinksList = ({children, onNewLinkClick, noLinks}: LinksListProps) =
             firstUpdate.current = false;
             return;
         }
-       scrollToBottom();
+       //scrollToBottom();
     }, [children])
     return (
         <div className="links-list-container">

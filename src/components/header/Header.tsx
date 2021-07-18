@@ -10,7 +10,7 @@ export const Header = () => {
     const [openSettingPopup, setOpenSettingsPopup] = useState<boolean>(false);
     const [buttonText, setButtonText ] = useState<string>('Copy');
     const user = useSelector(selectUser)
-    const [linkName, setLinkName ] = useState<string>(`linkta.me/${user.name}`);
+    const [linkName, setLinkName ] = useState<string>(`linktame.herokuapp.com/${user.name}`);
 
     const onOutsideClick = () => {
         setOpenSettingsPopup(false);
@@ -31,7 +31,7 @@ export const Header = () => {
             </div>
             <div className="header-link-copy-holder">
                 <div className="header-link-holder">
-                    linktame.herokuapp.com/{user.name}
+                    {linkName}
                 </div>
                 <div className="header-copy-holder">
                     <button className="filled" onClick={() => copyToClipBoard()} type="submit">{buttonText}</button>

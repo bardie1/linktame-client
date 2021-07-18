@@ -1,0 +1,29 @@
+.full-page-public-link-container {
+    background-color: var(--purple);
+    height: 100vh;
+    width: 100vw;
+    position: static;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.public-link-intro {
+    margin-top: 30px;
+    width: 100%;
+    font-size: 50px;
+    text-align: center;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 40px;
+}
+
+.public-link-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+}

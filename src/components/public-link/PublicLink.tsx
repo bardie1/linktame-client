@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { linkService } from '../../services/link.service';
 import "./PublicLink.css";
+import { PublicLinkLink } from "../public-link-link/PublicLinkLink";
 
 export const PublicLink = () => {
 
@@ -23,10 +24,15 @@ export const PublicLink = () => {
 
 
     return (
-        <div>
-            {links.map((l) => {
-                return <div key={l.public_id}>{l.link_name}</div>
-            })}
+        <div className="full-page-public-link-container">
+            <div className="public-link-intro">
+                Hey, Welcome to my Linkta Me
+            </div>
+            <div className="public-link-container">
+                {links.map((l) => {
+                    return <PublicLinkLink key={l.public_id} link={l} />
+                })}
+            </div>
         </div>
     )
 }
