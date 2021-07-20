@@ -16,9 +16,21 @@ export const Header = () => {
         setOpenSettingsPopup(false);
     }
 
-    const copyToClipBoard = () => {
+    const copyToClipBoard = (text: string) => {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        
+        // Avoid scrolling to bottom
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
         setButtonText("Copied!")
-        navigator.clipboard.writeText(linkName);
         setTimeout(() => {
             setButtonText("Copy");
         }, 3000);
@@ -34,7 +46,7 @@ export const Header = () => {
                     {linkName}
                 </div>
                 <div className="header-copy-holder">
-                    <button className="filled" onClick={() => copyToClipBoard()} type="submit">{buttonText}</button>
+                    <button className="filled" onClick={() => copyToClipBoard(linkName)} type="submit">{buttonText}</button>
                 </div>
             </div>
             <div className="header-settings-container">
