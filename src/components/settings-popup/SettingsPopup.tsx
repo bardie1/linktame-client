@@ -25,9 +25,21 @@ export const SettingsPopup = ({clickedOutside, linkName}: SettingsPopupProps) =>
         sessionService.clearSession();
     }
 
-    const copyToClipBoard = () => {
+    const copyToClipBoard = (text:string) => {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        
+        // Avoid scrolling to bottom
+        textArea.style.top = "0";
+        textArea.style.left = "0";
+        textArea.style.position = "fixed";
+
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
         setButtonText("Copied!")
-        navigator.clipboard.writeText(linkName);
         setTimeout(() => {
             setButtonText("Copy Link");
         }, 3000);
@@ -44,7 +56,7 @@ export const SettingsPopup = ({clickedOutside, linkName}: SettingsPopupProps) =>
     return (
         <div ref={wrapperRef} className="settings-popup-container">
             <ul className="settings-popup-list">
-                <li onClick={() => copyToClipBoard()} className="settings-popup-list-item"><i><FilterNoneOutlinedIcon /></i>{buttonText}</li>
+                <li onClick={() => copyToClipBoard(linkName)} className="settings-popup-list-item"><i><FilterNoneOutlinedIcon /></i>{buttonText}</li>
                 <li className="settings-popup-list-item"><i><SettingsIcon /></i> Settings</li>
                 <li onClick={() => logoutOfApp()} className="settings-popup-list-item"><i><ExitToAppIcon /></i>  Logout</li>
             </ul>
