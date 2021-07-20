@@ -99,6 +99,7 @@ export const Body = () => {
                     Icon: CheckCircleOutlineIcon,
                     message: 'Link Created Successfully'
                 })
+                setEditLinkOpen(false);
                 setTimeout(()  => {
                     setNotificationConfig(null);
                 }, 5000);
