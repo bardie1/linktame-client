@@ -7,18 +7,26 @@ import { useOutsideAlerter } from '../../hooks/outsideAlerter.hook';
 import "./SettingsPopup.css"
 import { logout } from '../../redux/slicers/userSlicer';
 import { sessionService } from '../../services/session.service';
+
+import { useHistory } from 'react-router-dom';
 type SettingsPopupProps = {
     clickedOutside: Function,
     linkName: string,
+    closePopup: Function,
 }
 
-export const SettingsPopup = ({clickedOutside, linkName}: SettingsPopupProps) => {
+export const SettingsPopup = ({clickedOutside, linkName, closePopup}: SettingsPopupProps) => {
 
     const [buttonText, setButtonText ] = useState<string>('Copy Link');
     const wrapperRef = useRef(null);
     const clickOutside = useOutsideAlerter(wrapperRef);
     const dispatch = useDispatch();
+    let history = useHistory();
 
+    const goToSettings = () => {
+        closePopup();
+        history.push("/user/settings");
+    }
 
     const logoutOfApp = () => {
         dispatch(logout());
@@ -57,7 +65,7 @@ export const SettingsPopup = ({clickedOutside, linkName}: SettingsPopupProps) =>
         <div ref={wrapperRef} className="settings-popup-container">
             <ul className="settings-popup-list">
                 <li onClick={() => copyToClipBoard(linkName)} className="settings-popup-list-item"><i><FilterNoneOutlinedIcon /></i>{buttonText}</li>
-                <li className="settings-popup-list-item"><i><SettingsIcon /></i> Settings</li>
+                <li onClick={() => goToSettings()} className="settings-popup-list-item"><i><SettingsIcon /></i> Settings</li>
                 <li onClick={() => logoutOfApp()} className="settings-popup-list-item"><i><ExitToAppIcon /></i>  Logout</li>
             </ul>
         </div>

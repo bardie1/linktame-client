@@ -5,14 +5,24 @@ import "./Header.css";
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/slicers/userSlicer';
 import { SettingsPopup } from '../settings-popup/SettingsPopup';
+import { useHistory } from "react-router-dom";
 export const Header = () => {
 
     const [openSettingPopup, setOpenSettingsPopup] = useState<boolean>(false);
     const [buttonText, setButtonText ] = useState<string>('Copy');
     const user = useSelector(selectUser)
     const [linkName, setLinkName ] = useState<string>(`linktame.herokuapp.com/${user.name}`);
+    const history = useHistory();
 
     const onOutsideClick = () => {
+        setOpenSettingsPopup(false);
+    }
+
+    const goHome = () => {
+        history.push("/");
+    }
+
+    const closePopup = () => {
         setOpenSettingsPopup(false);
     }
 
@@ -38,7 +48,7 @@ export const Header = () => {
 
     return (
         <div className="header-container">
-            <div className="header-logo-container">
+            <div onClick={() => goHome()} className="header-logo-container">
                 LinktaMe
             </div>
             <div className="header-link-copy-holder">
@@ -61,7 +71,7 @@ export const Header = () => {
                 </div>
                 { openSettingPopup && (
                 <div className="setting-popup-holder">
-                    <SettingsPopup linkName={linkName} clickedOutside={onOutsideClick} />
+                    <SettingsPopup closePopup={closePopup} linkName={linkName} clickedOutside={onOutsideClick} />
                 </div>) }
             </div>
         </div>

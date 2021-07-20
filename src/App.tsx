@@ -51,7 +51,7 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path="/" exact={true}>
+        <Route path={["/", "/user/settings"]} exact={true}>
           <div className="App">
             {
               user ? (
@@ -62,7 +62,7 @@ function App() {
             }
           </div>
         </Route>
-        <Route path="/:name">
+        <Route path="/:name" exact={true}>
             <PublicLink />
         </Route>
       </Switch>
