@@ -7,6 +7,7 @@ import { PublicLink } from "./components/public-link/PublicLink";
 import { useDispatch, useSelector } from 'react-redux';
 import { sessionService } from './services/session.service';
 import { login, logout, selectUser } from './redux/slicers/userSlicer';
+import { setDevice } from "./redux/slicers/deviceSlicer";
 import { useValidSession } from './hooks/validSession.hook';
 import {
   BrowserRouter as Router,
@@ -21,6 +22,12 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const validSession = useValidSession(user);
+
+
+  useEffect(() => {
+    let d: string = sessionService.identifyDeviceType();
+    dispatch(setDevice(d));
+  })
 
   useEffect(() => {
     let mounted = true;

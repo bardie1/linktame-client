@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import linkDto from '../../models/link';
+import {useSelector} from 'react-redux';
+import { selectDevice } from "../../redux/slicers/deviceSlicer";
 
 import "./Link.css";
 
@@ -14,6 +16,8 @@ type LinkProps = {
 export const Link = ({link, onClick, selected, deleteLink} : LinkProps) => {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
    
+    const device = useSelector(selectDevice)
+    
     const confirmDelete = (e: any, confirmed: boolean) => {
         e.stopPropagation();
         if (deleteLink && confirmed) {
@@ -28,7 +32,7 @@ export const Link = ({link, onClick, selected, deleteLink} : LinkProps) => {
             <div className="link-name-holder">
                 {link.link_name}
             </div>
-            <div className="link-delete-holder">
+            <div className={(device === 'tablet' || device === 'mobile') ? 'link-delete-holder mobile' : 'link-delete-holder'}>
                 <div className="delete-can-holder" onClick={(e) => {e.stopPropagation(); setShowDeleteConfirmation(true)}}><DeleteOutlineIcon /></div>
                 {showDeleteConfirmation && (
 

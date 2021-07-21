@@ -38,6 +38,10 @@
     opacity: 1;
 }
 
+.link-delete-holder.mobile > * {
+    opacity: 1;
+}
+
 .delete-can-holder:hover {
     color: red;
     animation: wiggle 0.7s linear;
