@@ -94,7 +94,11 @@ const updateLink = async (link: LinkDto, token: string) => {
     console.log(link);
     httpPutConfig.headers["x-access-token"] = token;
     let body = {
-        links: [link]
+        link: link.link,
+        link_name: link.link_name,
+        link_pos: link.link_pos,
+        public_id: link.public_id,
+        id: link.id,
     }
 
     httpPutConfig.body = JSON.stringify(body);
