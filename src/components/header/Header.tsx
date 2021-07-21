@@ -10,12 +10,23 @@ export const Header = () => {
 
     const [openSettingPopup, setOpenSettingsPopup] = useState<boolean>(false);
     const [buttonText, setButtonText ] = useState<string>('Copy');
+    const [settingPopupButtonClicked, setSettingPopupButtonClicked] = useState<boolean>(false);
     const user = useSelector(selectUser)
     const [linkName, setLinkName ] = useState<string>(`linktame.herokuapp.com/${user.name}`);
     const history = useHistory();
 
     const onOutsideClick = () => {
-        setOpenSettingsPopup(false);
+        setTimeout(() => {
+            setOpenSettingsPopup(false);
+        }, 100)
+    }
+
+    const settingPopupShower = () => {
+        if (openSettingPopup) {
+            setSettingPopupButtonClicked(true);
+        }
+
+        setOpenSettingsPopup(!openSettingPopup);
     }
 
     const goHome = () => {
@@ -63,10 +74,10 @@ export const Header = () => {
                 <div className="header-user-name-holder">
                     {user.email}
                 </div>
-                <div className="header-account-icon-holder">
+                <div onClick={() => settingPopupShower()}  className="header-account-icon-holder">
                     <AccountCircleIcon style={{color: "var(--purple)"}}/>
                 </div>
-                <div onClick={() => setOpenSettingsPopup(true)} className="header-arrow-icon-holder">
+                <div onClick={() => settingPopupShower()} className="header-arrow-icon-holder">
                     <ArrowDropDownIcon style={{color: "var(--purple)"}}/>
                 </div>
                 { openSettingPopup && (
