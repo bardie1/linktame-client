@@ -47,13 +47,15 @@ export const SetName = () => {
                 public_id: res.user.public_id,
                 token: res.token,
                 email: res.user.email,
-                name: link
+                name: link,
+                exp: user.exp
             }))
             sessionService.setUser({
                 public_id: res.user.public_id,
                 token: res.token,
                 email: res.user.email,
-                name: link
+                name: link,
+                exp: user.exp
             });
             setLoading(false);
         } else {
