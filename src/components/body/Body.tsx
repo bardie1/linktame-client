@@ -12,6 +12,7 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import "./Body.css";
 import { selectUser } from '../../redux/slicers/userSlicer';
+import { selectDevice } from '../../redux/slicers/deviceSlicer';
 
 
 export const Body = () => {
@@ -25,6 +26,7 @@ export const Body = () => {
     const [notificationConfig, setNotificationConfig ] = useState<NotificationConfig | null>(null)
     const [dragId, setDragId] = useState<string>('');
 
+    const device = useSelector(selectDevice);
     const user = useSelector(selectUser);
     const draggingLink = useRef<string>('');
     const newLink: LinkDto = {
@@ -192,15 +194,17 @@ export const Body = () => {
         if (e.currentTarget) {
             draggingLink.current = e.currentTarget.id
         }
-        setTimeout(() => {
-            let linkEls  = document.getElementsByClassName("link-container");
-            if (linkEls) {
-            links.forEach((l, idx) => {
-                if (l.public_id === draggingLink.current)
-                (linkEls.item(idx) as HTMLScriptElement).style.opacity = "0";
-            })
+        if (device === 'desktop') {
+            setTimeout(() => {
+                let linkEls  = document.getElementsByClassName("link-container");
+                if (linkEls) {
+                links.forEach((l, idx) => {
+                    if (l.public_id === draggingLink.current)
+                    (linkEls.item(idx) as HTMLScriptElement).style.opacity = "0";
+                })
+            }
+            },0);
         }
-        },0);
     }
 
     const dragEnd = (e: any) => {

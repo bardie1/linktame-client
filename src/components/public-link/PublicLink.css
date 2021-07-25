@@ -1,6 +1,6 @@
 .full-page-public-link-container {
     background-color: var(--purple);
-    min-height: 100vh;
+    min-height: calc(var(--vh, 1vh) * 100);
     height: fit-content;
     width: 100vw;
     display: flex;

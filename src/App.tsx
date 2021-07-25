@@ -30,6 +30,22 @@ function App() {
   })
 
   useEffect(() => {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+    window.addEventListener("resize", () => {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    })
+
+    return () => {
+      window.removeEventListener("resize", () => {
+        let vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty("--vh", `${vh}px`);
+      });
+    }
+  }, [])
+
+  useEffect(() => {
     let mounted = true;
     console.log(validSession);
     if (validSession) {
