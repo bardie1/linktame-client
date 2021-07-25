@@ -15,12 +15,12 @@ export const LinksList = ({children, onNewLinkClick, noLinks}: LinksListProps) =
     const bottomRef = createRef<HTMLDivElement>();
     const firstUpdate = useRef(true);
 
-    const scrollToBottom = () => {
-       bottomRef.current?.scrollIntoView({
-           behavior: "smooth",
-           block: "end"
-       })
-    }
+    // const scrollToBottom = () => {
+    //    bottomRef.current?.scrollIntoView({
+    //        behavior: "smooth",
+    //        block: "end"
+    //    })
+    // }
 
     useEffect(() => {
         if (firstUpdate.current) {

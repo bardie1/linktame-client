@@ -12,7 +12,6 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import "./Body.css";
 import { selectUser } from '../../redux/slicers/userSlicer';
-import { useValidSession } from "../../hooks/validSession.hook";
 
 
 export const Body = () => {
@@ -24,6 +23,8 @@ export const Body = () => {
     const [createLinkLoading, setCreateLinkLoading] = useState<boolean>(false);
     const [valid, setValid] = useState<boolean>(false);
     const [notificationConfig, setNotificationConfig ] = useState<NotificationConfig | null>(null)
+    const [dragId, setDragId] = useState<string>('');
+    const [draggedOverId, setDraggedOverId] = useState<string>("");
 
     const user = useSelector(selectUser);
 
@@ -195,6 +196,68 @@ export const Body = () => {
        }
     }
 
+    const handleDrag = (e: any) => {
+        console.log(e.currentTarget.id);
+        setDragId(e.currentTarget.id);
+        //e.currentTarget.style.display = 'none';
+    }
+
+    const dragEnd = (e: any) => {
+        let linkEls  = document.getElementsByClassName("link-container");
+        if (linkEls) {
+            links.forEach((l, idx) => {
+                (linkEls.item(idx) as HTMLScriptElement).style.marginTop = "0";
+            })
+        }
+    }
+
+    const handleDrop = (e: any) => {
+        const dragLink = links.find((link) => link.public_id === dragId);
+        const dropLink = links.find((link) => link.public_id === e.currentTarget.id);
+        const dragLinkOrder = dragLink?.link_pos;
+        const dropLinkOrder = dropLink?.link_pos; 
+        const newLinkState = links.map((link) => {
+            if (link.public_id === dragId) {
+                if (dropLinkOrder){
+                    link.link_pos = dropLinkOrder;
+                }
+            } else {
+                if (dragLinkOrder && dropLinkOrder && dragLinkOrder > dropLinkOrder) {
+                    if (link.link_pos >= dropLinkOrder && link.link_pos < dragLinkOrder ) {
+                        link.link_pos++;
+                    }
+                } else if (dragLinkOrder && dropLinkOrder && dragLinkOrder < dropLinkOrder) {
+                    if (link.link_pos <= dropLinkOrder && link.link_pos > dragLinkOrder) {
+                        link.link_pos--;
+                    }
+                }
+            }
+
+            return link;
+        });
+
+        console.log(newLinkState);
+
+        setLinks(newLinkState);
+    }
+
+    const draggedOver = (e: any) =>{
+        e.preventDefault();
+        setDraggedOverId(e.currentTarget.id);
+        let linkEls  = document.getElementsByClassName("link-container");
+        if (linkEls) {
+            links.forEach((l, idx) => {
+                if (l.public_id === draggedOverId) {
+                    (linkEls.item(idx) as HTMLScriptElement).style.marginTop = "30px";
+                } else {
+                    (linkEls.item(idx) as HTMLScriptElement).style.marginTop = "0";
+                }
+            })
+        }
+        
+   }
+
+
     return (
         <div className="body-container">
 
@@ -205,8 +268,8 @@ export const Body = () => {
             ) : (
 
                 <LinksList noLinks={(links.length === 0 && !currentLink) ? true : false} onNewLinkClick={newLinkClicked} >
-                    { links.map(l => {
-                        return <Link deleteLink={deleteLink} selected={(currentLink?.public_id === l.public_id) ? true : false} onClick={editLink} key={l.public_id} link={l}/>
+                    { links.sort((a,b) => a.link_pos - b.link_pos).map(l => {
+                        return <Link draggedOver={draggedOver} dragEnd={dragEnd} handleDrag={handleDrag} handleDrop={handleDrop} deleteLink={deleteLink} selected={(currentLink?.public_id === l.public_id) ? true : false} onClick={editLink} key={l.public_id} link={l}/>
                     })}
                     { (currentLink && !currentLink?.public_id) && <Link selected={true} onClick={editLink} link={currentLink} />}
                 </LinksList>

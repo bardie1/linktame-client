@@ -8,10 +8,7 @@ import "./Main.css";
 import { selectUser } from '../../redux/slicers/userSlicer';
 import { useSelector } from 'react-redux';
 import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
+    Route
   } from "react-router-dom";
 export const Main = () => {
 

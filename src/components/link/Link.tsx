@@ -11,9 +11,13 @@ type LinkProps = {
     onClick: Function,
     selected: boolean,
     deleteLink?: Function,
+    handleDrag?: any,
+    handleDrop?: any,
+    dragEnd?: any,
+    draggedOver?: any,
 }
 
-export const Link = ({link, onClick, selected, deleteLink} : LinkProps) => {
+export const Link = ({link, onClick, selected, deleteLink, handleDrag, handleDrop, dragEnd, draggedOver} : LinkProps) => {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
    
     const device = useSelector(selectDevice)
@@ -28,7 +32,15 @@ export const Link = ({link, onClick, selected, deleteLink} : LinkProps) => {
     }
 
     return (
-        <div onMouseLeave={() => setShowDeleteConfirmation(false)} onClick={() => onClick(link)} className={selected ? 'link-container selected' : 'link-container'}>
+        <div draggable 
+            onDragOver={(e) => draggedOver(e)}
+            onDragStart={handleDrag}
+            onDragEnd = {(e) => dragEnd(e)}
+            onDrop={handleDrop}
+            id={link.public_id} 
+            onMouseLeave={() => setShowDeleteConfirmation(false)} 
+            onClick={() => onClick(link)} 
+            className={selected ? 'link-container selected' : 'link-container'}>
             <div className="link-name-holder">
                 {link.link_name}
             </div>

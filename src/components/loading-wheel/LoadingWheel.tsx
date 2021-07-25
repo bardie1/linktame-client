@@ -1,4 +1,3 @@
-import { BorderColor } from '@material-ui/icons';
 import React from 'react';
 
 import './LoadingWheel.css';

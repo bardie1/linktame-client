@@ -13,7 +13,6 @@ import { ErrorPanel } from '../error-panel/ErrorPanel';
 export const SetName = () => {
 
     const [link, setLink] = useState<string>('');
-    const [linkAvailable, setLinkAvailable] = useState<boolean>(false);
     const [valid, setValid] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -22,15 +21,6 @@ export const SetName = () => {
 
     const user = useSelector(selectUser)
     const dispatch = useDispatch()
-
-    const isLinkValid = async (linkName: string) => {
-        // setLoading(true);
-        // //let res = await userService.linkNameAvaliable(debouncedLinkName);
-        // //setLinkAvailable();
-        // setTimeout(() => {
-        //     setLoading(false);
-        // }, 3000); 
-    }
 
     const claimLink = async(e: any) =>{
         e.preventDefault()

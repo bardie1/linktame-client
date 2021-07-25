@@ -12,7 +12,7 @@ export const Header = () => {
     const [buttonText, setButtonText ] = useState<string>('Copy');
     const [settingPopupButtonClicked, setSettingPopupButtonClicked] = useState<boolean>(false);
     const user = useSelector(selectUser)
-    const [linkName, setLinkName ] = useState<string>(`linktame.herokuapp.com/${user.name}`);
+    const linkName = `linktame.herokuapp.com/${user.name}`;
     const history = useHistory();
 
     const onOutsideClick = () => {
