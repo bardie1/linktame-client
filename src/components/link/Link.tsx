@@ -34,7 +34,7 @@ export const Link = ({link, onClick, selected, deleteLink, handleDrag, handleDro
     return (
         <div draggable 
             onDragOver={(e) => draggedOver(e)}
-            onDragStart={handleDrag}
+            onDragStart={(e) => handleDrag(e)}
             onDragEnd = {(e) => dragEnd(e)}
             onDrop={handleDrop}
             id={link.public_id} 

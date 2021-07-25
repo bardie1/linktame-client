@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { selectUser } from "../redux/slicers/userSlicer";
 
 export function useValidSession(user: any) : boolean {
     const [validSession, setValidSession ] = useState<boolean>(true);

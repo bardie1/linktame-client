@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import LinkDto from '../../models/link';
 import { NotificationConfig } from '../../models/notificationConfig';
@@ -24,14 +24,13 @@ export const Body = () => {
     const [valid, setValid] = useState<boolean>(false);
     const [notificationConfig, setNotificationConfig ] = useState<NotificationConfig | null>(null)
     const [dragId, setDragId] = useState<string>('');
-    const [draggedOverId, setDraggedOverId] = useState<string>("");
 
     const user = useSelector(selectUser);
-
+    const draggingLink = useRef<string>('');
     const newLink: LinkDto = {
         link: '',
         link_name: '',
-        link_pos: links.length
+        link_pos: links.length + 1
     }
 
    const newLinkClicked = () => {
@@ -61,18 +60,6 @@ export const Body = () => {
         return () => {mounted = false};
     }, [])
 
-
-    useEffect(() => {
-        let mounted = true;
-        
-        if (mounted) {
-            if (currentLink) {
-                setCurrentLink(links[links.length - 1]);
-            }
-        }
-
-        return () => {mounted = false}
-    }, [links]);
 
     const setName = (name: string) => {
         if (currentLink) {
@@ -199,61 +186,98 @@ export const Body = () => {
     const handleDrag = (e: any) => {
         console.log(e.currentTarget.id);
         setDragId(e.currentTarget.id);
-        //e.currentTarget.style.display = 'none';
+        if (e.currentTarget) {
+            draggingLink.current = e.currentTarget.id
+        }
+        setTimeout(() => {
+            let linkEls  = document.getElementsByClassName("link-container");
+            if (linkEls) {
+            links.forEach((l, idx) => {
+                if (l.public_id === draggingLink.current)
+                (linkEls.item(idx) as HTMLScriptElement).style.opacity = "0";
+            })
+        }
+        },0);
     }
 
     const dragEnd = (e: any) => {
         let linkEls  = document.getElementsByClassName("link-container");
         if (linkEls) {
             links.forEach((l, idx) => {
-                (linkEls.item(idx) as HTMLScriptElement).style.marginTop = "0";
+                (linkEls.item(idx) as HTMLScriptElement).style.opacity = "1";
             })
         }
     }
 
     const handleDrop = (e: any) => {
-        const dragLink = links.find((link) => link.public_id === dragId);
-        const dropLink = links.find((link) => link.public_id === e.currentTarget.id);
-        const dragLinkOrder = dragLink?.link_pos;
-        const dropLinkOrder = dropLink?.link_pos; 
-        const newLinkState = links.map((link) => {
-            if (link.public_id === dragId) {
-                if (dropLinkOrder){
-                    link.link_pos = dropLinkOrder;
-                }
-            } else {
-                if (dragLinkOrder && dropLinkOrder && dragLinkOrder > dropLinkOrder) {
-                    if (link.link_pos >= dropLinkOrder && link.link_pos < dragLinkOrder ) {
-                        link.link_pos++;
-                    }
-                } else if (dragLinkOrder && dropLinkOrder && dragLinkOrder < dropLinkOrder) {
-                    if (link.link_pos <= dropLinkOrder && link.link_pos > dragLinkOrder) {
-                        link.link_pos--;
-                    }
-                }
-            }
+        // const dragLink = links.find((link) => link.public_id === dragId);
+        // const dropLink = links.find((link) => link.public_id === e.currentTarget.id);
+        // const dragLinkOrder = dragLink?.link_pos;
+        // const dropLinkOrder = dropLink?.link_pos; 
+        // const newLinkState = links.map((link) => {
+        //     if (link.public_id === dragId) {
+        //         if (dropLinkOrder){
+        //             link.link_pos = dropLinkOrder;
+        //         }
+        //     } else {
+        //         if (dragLinkOrder && dropLinkOrder && dragLinkOrder > dropLinkOrder) {
+        //             if (link.link_pos >= dropLinkOrder && link.link_pos < dragLinkOrder ) {
+        //                 link.link_pos++;
+        //             }
+        //         } else if (dragLinkOrder && dropLinkOrder && dragLinkOrder < dropLinkOrder) {
+        //             if (link.link_pos <= dropLinkOrder && link.link_pos > dragLinkOrder) {
+        //                 link.link_pos--;
+        //             }
+        //         }
+        //     }
 
-            return link;
-        });
+        //     return link;
+        // });
 
-        console.log(newLinkState);
+        // console.log(newLinkState);
 
-        setLinks(newLinkState);
+        // setLinks(newLinkState);
     }
 
     const draggedOver = (e: any) =>{
         e.preventDefault();
-        setDraggedOverId(e.currentTarget.id);
-        let linkEls  = document.getElementsByClassName("link-container");
-        if (linkEls) {
-            links.forEach((l, idx) => {
-                if (l.public_id === draggedOverId) {
-                    (linkEls.item(idx) as HTMLScriptElement).style.marginTop = "30px";
-                } else {
-                    (linkEls.item(idx) as HTMLScriptElement).style.marginTop = "0";
+        const dragLink = links.find((link) => link.public_id === dragId);
+        const overLink = links.find((link) => link.public_id === e.currentTarget.id);
+
+        const dragLinkPosition = dragLink?.link_pos;
+        const overLinkPosition = overLink?.link_pos;
+
+        const newLinkState = links.map((l) => {
+            if (l.public_id === dragId) {
+                if (overLinkPosition) {
+                    l.link_pos = overLinkPosition;
                 }
-            })
-        }
+            } else {
+                if (dragLinkPosition && overLinkPosition && dragLinkPosition > overLinkPosition) {
+                    if (l.link_pos >= overLinkPosition && l.link_pos < dragLinkPosition ) {
+                        l.link_pos++;
+                    }
+                } else if (dragLinkPosition && overLinkPosition && dragLinkPosition < overLinkPosition) {
+                    if (l.link_pos <= overLinkPosition && l.link_pos > dragLinkPosition) {
+                        l.link_pos--;
+                    }
+                }
+            }
+
+            return l
+        })
+
+        setLinks(newLinkState)
+        // let linkEls  = document.getElementsByClassName("link-container");
+        // if (linkEls) {
+        //     links.forEach((l, idx) => {
+        //         if (l.public_id === draggedOverId) {
+        //             (linkEls.item(idx) as HTMLScriptElement).style.marginTop = "30px";
+        //         } else {
+        //             (linkEls.item(idx) as HTMLScriptElement).style.marginTop = "0";
+        //         }
+        //     })
+        // }
         
    }
 

@@ -2,6 +2,7 @@ import React, {useRef, useEffect, useState} from 'react';
 import { useDispatch } from 'react-redux';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SettingsIcon from '@material-ui/icons/Settings';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import FilterNoneOutlinedIcon from '@material-ui/icons/FilterNoneOutlined';
 import { useOutsideAlerter } from '../../hooks/outsideAlerter.hook';
 import "./SettingsPopup.css"
@@ -23,9 +24,9 @@ export const SettingsPopup = ({clickedOutside, linkName, closePopup}: SettingsPo
     const dispatch = useDispatch();
     let history = useHistory();
 
-    const goToSettings = () => {
+    const goTo = (internalUrl : string) => {
         closePopup();
-        history.push("/user/settings");
+        history.push(internalUrl);
     }
 
     const logoutOfApp = () => {
@@ -65,7 +66,8 @@ export const SettingsPopup = ({clickedOutside, linkName, closePopup}: SettingsPo
         <div ref={wrapperRef} className="settings-popup-container">
             <ul className="settings-popup-list">
                 <li onClick={() => copyToClipBoard(linkName)} className="settings-popup-list-item"><i><FilterNoneOutlinedIcon /></i>{buttonText}</li>
-                <li onClick={() => goToSettings()} className="settings-popup-list-item"><i><SettingsIcon /></i> Settings</li>
+                <li onClick={() => goTo('/user/account')} className="settings-popup-list-item"><i><AccountBoxIcon /></i> Acccount</li>
+                {/* <li onClick={() => goTo('/user/settings')} className="settings-popup-list-item"><i><SettingsIcon /></i> Settings</li> */}
                 <li onClick={() => logoutOfApp()} className="settings-popup-list-item"><i><ExitToAppIcon /></i>  Logout</li>
             </ul>
         </div>

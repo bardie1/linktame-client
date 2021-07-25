@@ -15,7 +15,8 @@
 }
 
 .settings-popup-list > li:hover{
-    background-color: var(--lightPurple);
+    background-color: var(--purple);
+    color: white;
 }
 
 .settings-popup-list > li > i{
