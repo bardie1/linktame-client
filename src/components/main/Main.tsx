@@ -4,6 +4,7 @@ import { Header } from '../header/Header';
 import { Body } from '../body/Body';
 import { SetName } from '../set-name/SetName';
 import { Settings } from '../settings/Settings';
+import { Account } from '../account/Account';
 import "./Main.css";
 import { selectUser } from '../../redux/slicers/userSlicer';
 import { useSelector } from 'react-redux';
@@ -26,6 +27,9 @@ export const Main = () => {
                         </Route>
                         <Route path="/user/settings" exact={true}>
                             <Settings />
+                        </Route>
+                        <Route path="/user/account" exact={true}>
+                            <Account />
                         </Route>
                 </div>
             )}

@@ -58,7 +58,7 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route path={["/", "/user/settings"]} exact={true}>
+        <Route path={["/", "/user/settings", "/user/account"]} exact={true}>
           <div className="App">
             {
               user ? (
