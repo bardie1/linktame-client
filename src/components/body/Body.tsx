@@ -55,7 +55,7 @@ export const Body = () => {
 
     useEffect(() => {
         let mounted = true;
-        getLinks(mounted);
+        getLinks(mounted,true);
 
         return () => {mounted = false};
     }, [])
@@ -91,7 +91,8 @@ export const Body = () => {
                 setTimeout(()  => {
                     setNotificationConfig(null);
                 }, 5000);
-                getLinks(true);
+                setCurrentLink(null);
+                getLinks(true, false);
             } else {
                 setNotificationConfig({
                     type: 'error',
@@ -116,7 +117,7 @@ export const Body = () => {
                     message: "Link has been updated successfully"
                 }
                 setNotificationConfig(config);
-                getLinks(true);
+                getLinks(true, false);
             } else {
                 setCreateLinkLoading(false);
                 let config: NotificationConfig = {
@@ -139,8 +140,10 @@ export const Body = () => {
         setCurrentLink(null);
     }
 
-    const getLinks = async(mounted: boolean) => {
-        setLinkListLoading(true);
+    const getLinks = async(mounted: boolean, showLoading: boolean) => {
+        if (showLoading) {
+            setLinkListLoading(true);
+        }
         let res = await linkService.getLinks(user.token);
         console.log(res);
         if (res.successful) {
@@ -170,7 +173,7 @@ export const Body = () => {
         setTimeout(()  => {
             setNotificationConfig(null);
         }, 5000);
-           getLinks(true);
+           getLinks(true, false);
        } else {
         setNotificationConfig({
             type: 'error',
