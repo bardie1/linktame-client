@@ -6,7 +6,73 @@
     width: 90%;
     margin-left: auto;
     margin-right: auto;
-    background-color: gray;
     height: fit-content;
     padding-top: 20px;
+}
+
+.account-form-header {
+    margin-bottom: 30px;
+}
+
+.account-form {
+    max-width: 500px;
+}
+
+.name-holder, .email-holder {
+    margin-bottom: 30px;
+}
+
+
+
+input.account-form {
+    height: 30px;
+    padding: 5px 10px;
+    width: 100%;
+}
+
+input.account-form:focus {
+    border: none;
+    outline: none;
+}
+
+button.check-name-availability {
+    height: 30px;
+    margin-left: 30px;
+}
+
+.account-form-input-group {
+    display: flex;
+    align-items: center;
+    width:100%;
+}
+.account-form-input-group > .account-input-prepend {
+    background-color: var(--lightPurple);
+    padding-left: 10px;
+    font-weight: bold;
+    font-style: italic;
+    height: 30px;
+    padding: 5px 0px 5px 10px;   
+    display: flex;                                
+    align-items: center;
+}
+
+.account-form-buttons-holder {
+    display: flex;
+    justify-content: flex-end;
+}
+
+button.account-form-save {
+    width: 100px;
+    height: 30px;
+}
+
+button.account-form-cancel {
+    margin-right: 30px;
+    background-color: transparent;
+    border: none;
+    color: grey;
+}
+
+button.account-form-cancel:hover{
+    text-decoration: underline;
 }
