@@ -10,23 +10,24 @@ export const Header = () => {
 
     const [openSettingPopup, setOpenSettingsPopup] = useState<boolean>(false);
     const [buttonText, setButtonText ] = useState<string>('Copy');
-    const [settingPopupButtonClicked, setSettingPopupButtonClicked] = useState<boolean>(false);
+    const [outsideClicked, setOutsideClicked] = useState<boolean>(false);
     const user = useSelector(selectUser)
     const linkName = `linktame.herokuapp.com/${user.name}`;
     const history = useHistory();
 
     const onOutsideClick = () => {
+        setOutsideClicked(true);
+        setOpenSettingsPopup(false);
         setTimeout(() => {
-            setOpenSettingsPopup(false);
-        }, 100)
+            setOutsideClicked(false);
+        }, 500)
+
     }
 
     const settingPopupShower = () => {
-        if (openSettingPopup) {
-            setSettingPopupButtonClicked(true);
+        if (!outsideClicked) {
+            setOpenSettingsPopup(!openSettingPopup);
         }
-
-        setOpenSettingsPopup(!openSettingPopup);
     }
 
     const goHome = () => {
