@@ -51,6 +51,16 @@ input.edit-link-slider-form-input::placeholder {
     height: 30px;
 }
 
+.edit-slider-close-button {
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 3px;
+}
+
+.edit-slider-close-button:hover {
+    background-color: rgb(224, 224, 224);
+}
+
 @media only screen and (max-width : 530px) {
     .edit-link-slider-container {
         position: absolute;
