@@ -194,17 +194,19 @@ export const Body = () => {
         if (e.currentTarget) {
             draggingLink.current = e.currentTarget.id
         }
-        if (device === 'desktop') {
-            setTimeout(() => {
-                let linkEls  = document.getElementsByClassName("link-container");
-                if (linkEls) {
+        setTimeout(() => {
+            let linkEls  = document.getElementsByClassName("link-container");
+            if (linkEls) {
                 links.forEach((l, idx) => {
                     if (l.public_id === draggingLink.current)
-                    (linkEls.item(idx) as HTMLScriptElement).style.opacity = "0";
+                    if (device === 'desktop') {
+                        (linkEls.item(idx) as HTMLScriptElement).style.opacity = "0";
+                    } else {
+                        (linkEls.item(idx) as HTMLScriptElement).style.position = "fixed";
+                    }
                 })
             }
-            },0);
-        }
+        },0);
     }
 
     const dragEnd = (e: any) => {

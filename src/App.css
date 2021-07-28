@@ -35,11 +35,11 @@
 }
 
 
-form > .input-holder {
+form  .input-holder {
   display: flex;
   flex-direction: column;
 }
-form > .input-holder > label {
+form  .input-holder > label {
   font-weight: 500;
   color: rgb(83, 83, 83);
   padding-bottom: 5px;
