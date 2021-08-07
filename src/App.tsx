@@ -47,7 +47,6 @@ function App() {
 
   useEffect(() => {
     let mounted = true;
-    console.log(validSession);
     if (validSession) {
       if (userStorage) {
         let user2 = JSON.parse(userStorage);

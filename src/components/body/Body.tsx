@@ -25,6 +25,8 @@ export const Body = () => {
     const [valid, setValid] = useState<boolean>(false);
     const [notificationConfig, setNotificationConfig ] = useState<NotificationConfig | null>(null)
     const [dragId, setDragId] = useState<string>('');
+    const [mobileDragY, setMobileDragY] = useState<number>(0);
+    const [lastDraggedOverId, setLastDraggedOverId] = useState<string>('');
 
     const device = useSelector(selectDevice);
     const user = useSelector(selectUser);
@@ -82,7 +84,6 @@ export const Body = () => {
         setCreateLinkLoading(true);
         if (currentLink) {
             let res = await linkService.createLink([currentLink], user.token);
-            console.log(res);
             if (res.successful) {
                 setNotificationConfig({
                     type: 'success',
@@ -147,7 +148,6 @@ export const Body = () => {
             setLinkListLoading(true);
         }
         let res = await linkService.getLinks(user.token);
-        console.log(res);
         if (res.successful) {
             if (mounted) {
                 setLinks([...res.links]);
@@ -189,7 +189,6 @@ export const Body = () => {
     }
 
     const handleDrag = (e: any) => {
-        console.log(e.currentTarget.id);
         setDragId(e.currentTarget.id);
         if (e.currentTarget) {
             draggingLink.current = e.currentTarget.id
@@ -198,11 +197,31 @@ export const Body = () => {
             let linkEls  = document.getElementsByClassName("link-container");
             if (linkEls) {
                 links.forEach((l, idx) => {
-                    if (l.public_id === draggingLink.current)
-                    if (device === 'desktop') {
-                        (linkEls.item(idx) as HTMLScriptElement).style.opacity = "0";
-                    } else {
-                        (linkEls.item(idx) as HTMLScriptElement).style.position = "fixed";
+                    if (l.public_id === draggingLink.current) {
+                        if (device === 'desktop') {
+                            (linkEls.item(idx) as HTMLScriptElement).style.opacity = "0";
+                        } else {
+                            let height;
+                            let width;
+                            if (idx === 0 && links.length > 1) {
+                                height  = (linkEls.item(1) as HTMLScriptElement).offsetHeight - ((linkEls.item(0) as HTMLScriptElement).offsetHeight * 0.40);
+                                width = (linkEls.item(1) as HTMLScriptElement).offsetWidth - ((linkEls.item(0) as HTMLScriptElement).offsetWidth * 0.10);
+                            } else {
+                                height  = (linkEls.item(0) as HTMLScriptElement).offsetHeight - ((linkEls.item(0) as HTMLScriptElement).offsetHeight * 0.40);
+                                width = (linkEls.item(0) as HTMLScriptElement).offsetWidth - ((linkEls.item(0) as HTMLScriptElement).offsetWidth * 0.10);
+                            }
+                            let element = linkEls.item(idx) as HTMLScriptElement
+                            if (element) {
+                                element.style.position = "fixed";
+                                element.style.height = height + "px";
+                                element.style.width = width + "px";
+                                let touch = e.changedTouches[0] || e.touches[0];
+                                setMobileDragY(touch.clientY);
+                                element.style.zIndex = '1000';
+                                element.style.top = touch.clientY + 'px';
+                                element.style.left = touch.clientX + "px";
+                            }
+                        }
                     }
                 })
             }
@@ -210,51 +229,43 @@ export const Body = () => {
     }
 
     const dragEnd = (e: any) => {
+        setLastDraggedOverId('');
+        setMobileDragY(0);
         let linkEls  = document.getElementsByClassName("link-container");
         if (linkEls) {
             links.forEach((l, idx) => {
-                (linkEls.item(idx) as HTMLScriptElement).style.opacity = "1";
+                let element = (linkEls.item(idx) as HTMLScriptElement)
+                element.style.opacity = "1";
+                element.style.position = 'unset';
+                element.style.height = 'unset';
+                element.style.width = 'unset';
+                element.style.zIndex = 'unset';
+                element.style.top = 'unset';
+                element.style.left = 'unset';
             })
         }
     }
 
-    const handleDrop = (e: any) => {
-        // const dragLink = links.find((link) => link.public_id === dragId);
-        // const dropLink = links.find((link) => link.public_id === e.currentTarget.id);
-        // const dragLinkOrder = dragLink?.link_pos;
-        // const dropLinkOrder = dropLink?.link_pos; 
-        // const newLinkState = links.map((link) => {
-        //     if (link.public_id === dragId) {
-        //         if (dropLinkOrder){
-        //             link.link_pos = dropLinkOrder;
-        //         }
-        //     } else {
-        //         if (dragLinkOrder && dropLinkOrder && dragLinkOrder > dropLinkOrder) {
-        //             if (link.link_pos >= dropLinkOrder && link.link_pos < dragLinkOrder ) {
-        //                 link.link_pos++;
-        //             }
-        //         } else if (dragLinkOrder && dropLinkOrder && dragLinkOrder < dropLinkOrder) {
-        //             if (link.link_pos <= dropLinkOrder && link.link_pos > dragLinkOrder) {
-        //                 link.link_pos--;
-        //             }
-        //         }
-        //     }
-
-        //     return link;
-        // });
-
-        // console.log(newLinkState);
-
-        // setLinks(newLinkState);
-    }
-
     const draggedOver = (e: any) =>{
-        e.preventDefault();
+        if (typeof e !== 'string') {
+            e.preventDefault();
+        }
         const dragLink = links.find((link) => link.public_id === dragId);
-        const overLink = links.find((link) => link.public_id === e.currentTarget.id);
+
+
+        let overLink;
+        if (typeof e === 'string') {
+            overLink = links.find((link) => link.public_id === e);
+        } else {
+            overLink = links.find((link) => link.public_id === e.currentTarget.id);
+        }
 
         const dragLinkPosition = dragLink?.link_pos;
         const overLinkPosition = overLink?.link_pos;
+
+        if (typeof e === 'string') {
+    
+        }
 
         const newLinkState = links.map((l) => {
             if (l.public_id === dragId) {
@@ -263,10 +274,17 @@ export const Body = () => {
                 }
             } else {
                 if (dragLinkPosition && overLinkPosition && dragLinkPosition > overLinkPosition) {
+
+                    if (typeof e === 'string') {
+                        setLastDraggedOverId(e + "%up")
+                    }
                     if (l.link_pos >= overLinkPosition && l.link_pos < dragLinkPosition ) {
                         l.link_pos++;
                     }
                 } else if (dragLinkPosition && overLinkPosition && dragLinkPosition < overLinkPosition) {
+                    if (typeof e === 'string') {
+                        setLastDraggedOverId(e + "%down")
+                    }
                     if (l.link_pos <= overLinkPosition && l.link_pos > dragLinkPosition) {
                         l.link_pos--;
                     }
@@ -277,17 +295,6 @@ export const Body = () => {
         })
 
         setLinks(newLinkState)
-        // let linkEls  = document.getElementsByClassName("link-container");
-        // if (linkEls) {
-        //     links.forEach((l, idx) => {
-        //         if (l.public_id === draggedOverId) {
-        //             (linkEls.item(idx) as HTMLScriptElement).style.marginTop = "30px";
-        //         } else {
-        //             (linkEls.item(idx) as HTMLScriptElement).style.marginTop = "0";
-        //         }
-        //     })
-        // }
-        
    }
 
 
@@ -301,8 +308,9 @@ export const Body = () => {
             ) : (
 
                 <LinksList noLinks={(links.length === 0 && !currentLink) ? true : false} onNewLinkClick={newLinkClicked} >
-                    { links.sort((a,b) => a.link_pos - b.link_pos).map(l => {
-                        return <Link draggedOver={draggedOver} dragEnd={dragEnd} handleDrag={handleDrag} handleDrop={handleDrop} deleteLink={deleteLink} selected={(currentLink?.public_id === l.public_id) ? true : false} onClick={editLink} key={l.public_id} link={l}/>
+                    { links.sort((a,b) => a.link_pos - b.link_pos).map((l, idx) => {
+                        return <Link draggedOver={draggedOver} dragEnd={dragEnd} handleDrag={handleDrag} index={idx} draggedY={mobileDragY} lastDraggedOverPubId={lastDraggedOverId}
+                        deleteLink={deleteLink} selected={(currentLink?.public_id === l.public_id) ? true : false} onClick={editLink} key={l.public_id} link={l}/>
                     })}
                     { (currentLink && !currentLink?.public_id) && <Link selected={true} onClick={editLink} link={currentLink} />}
                 </LinksList>

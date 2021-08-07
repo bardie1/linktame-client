@@ -45,7 +45,6 @@ const createLink = async (link: LinkDto[], token:string) => {
         links : link,
     }
     httpPostConfig.headers["x-access-token"] = token;
-    console.log(b);
     httpPostConfig.body = JSON.stringify(b);
     let res = await fetch(env.url + "user/link", httpPostConfig)
                 .then(response => response.json())
@@ -57,7 +56,6 @@ const createLink = async (link: LinkDto[], token:string) => {
 }
 
 const getLinks = async (token?: string) => {
-    console.log(httpGetConfig);
     if (token) {
         httpGetConfig.headers["x-access-token"] = token;
     }
@@ -65,7 +63,6 @@ const getLinks = async (token?: string) => {
                 .then(response => {
                     return response.json()})
                 .catch(err => err);
-    console.log(res);
     return res;
 }
 
@@ -91,7 +88,6 @@ const deleteLink = async (linkPublicId: string, linkName: string, token: string)
 }
 
 const updateLink = async (link: LinkDto, token: string) => {
-    console.log(link);
     httpPutConfig.headers["x-access-token"] = token;
     let body = {
         link: link.link,
@@ -105,7 +101,6 @@ const updateLink = async (link: LinkDto, token: string) => {
     let res = await fetch(env.url + "user/link", httpPutConfig)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     if (!data.successsful) {
                         data.message = "Unable to update Link";
                     }

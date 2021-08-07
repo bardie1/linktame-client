@@ -26,7 +26,6 @@ const getUserAsObj = () => {
 
 const identifyDeviceType = () => {
     const ua = navigator.userAgent;
-    console.log(ua);
     if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
       return "tablet";
     }

@@ -12,7 +12,15 @@
     line-height: 1.5em;
     max-width: inherit;
     cursor: pointer;
-    transition: background-color 100ms linear;
+    transition: background-color 100ms linear, margin-top 100ms ease-in;
+}
+
+.link-container.up {
+  margin-top: 50px;
+}
+
+.link-container.down {
+    margin-bottom: 50px;
 }
 
 .link-name-holder {

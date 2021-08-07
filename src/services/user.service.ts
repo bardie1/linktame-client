@@ -14,11 +14,9 @@ const linkNameAvaliable = async (linkName: string) => {
     })
     .then(response => response.json())
     .then(data => {
-        console.log('Success:', data);
         return data;
     })
     .catch((error) => {
-        console.error('Error:', error);
         return error;
     })
 
@@ -45,7 +43,6 @@ const updateUser = async (user: User) => {
         const token = data.token;
         const user = jwt(token);
         data.user = user;
-        console.log('Success:', data);
         return data;
     })
     .catch((error) => {

@@ -20,7 +20,6 @@ const login = async (user: UserSignUpLogin) => {
         const token = data.token;
         const user = jwt(token);
         data.user = user;
-        console.log('Success:', data);
         return data;
     })
     .catch((error) => {
@@ -46,11 +45,9 @@ const signUp = async (user: UserSignUpLogin) => {
         const token = data.token;
         const user = jwt(token);
         data.user = user;
-        console.log('Success:', data);
         return data;
     })
     .catch((error) => {
-        console.error('Error:', error);
         return error;
     })
 
