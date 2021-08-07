@@ -236,7 +236,7 @@ export const Body = () => {
             links.forEach((l, idx) => {
                 let element = (linkEls.item(idx) as HTMLScriptElement)
                 element.style.opacity = "1";
-                element.style.position = 'unset';
+                element.style.position = 'relative';
                 element.style.height = 'unset';
                 element.style.width = 'unset';
                 element.style.zIndex = 'unset';
