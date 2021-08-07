@@ -46,7 +46,7 @@ export const Link = ({link, onClick, selected, deleteLink, handleDrag, dragEnd, 
 
     return (
         <div draggable
-            onTouchMove={(e) => {setDragging(true); handleDrag(e)}}
+            onTouchMove={(e) => {e.preventDefault(); setDragging(true); handleDrag(e)}}
             onTouchEnd={(e) => {setDragging(false); dragEnd(e)}}
             onDragOver={(e) => draggedOver(e)}
             onDragStart={(e) => {setDragging(true); handleDrag(e)}}
