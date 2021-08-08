@@ -3,6 +3,11 @@
 My attempt at a linktree clone.... Without tutorials!  
 Visit Linkta Me [here](http://www.linktame.herokuapp.com.au)
 
+This is a practice project. You can either create a new account. We do not verify the email so it can be made up if you would prefer. If you would rather not make an account at all you may use the details below for a test account.
+
+email: test@linkta.me  
+password: linktame_is_awesome
+
 ## Description
 
 Linkta Me is an application that allows users to create a collection of links. A personal linkta.me url is shared that gives visitors access to your link collection.
