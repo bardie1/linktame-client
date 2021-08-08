@@ -1,7 +1,7 @@
 # Linkta Me
 
 My attempt at a linktree clone.... Without tutorials!  
-Visit Linkta Me <a href="http://www.linktame.herokuapp.com.au" target="_blank">Here</a>
+Visit Linkta Me <a href="http://www.linktame.herokuapp.com" target="_blank">Here</a>
 
 This is a practice project. You can either create a new account (we do not verify the email so it can be made up if you would prefer) or you may use the details below for a test account.
 
