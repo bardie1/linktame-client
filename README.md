@@ -1,7 +1,7 @@
 # Linkta Me
 
 My attempt at a linktree clone.... Without tutorials!  
-Visit Linkta Me [here](http://www.herokuapp.com.au)
+Visit Linkta Me [here](http://www.linktame.herokuapp.com.au)
 
 ## Description
 
