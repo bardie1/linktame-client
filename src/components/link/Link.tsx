@@ -17,9 +17,10 @@ type LinkProps = {
     index?: number,
     draggedY?: number,
     lastDraggedOverPubId?: string,
+    newLinkOpen: boolean,
 }
 
-export const Link = ({link, onClick, selected, deleteLink, handleDrag, dragEnd, draggedOver, index, draggedY, lastDraggedOverPubId} : LinkProps) => {
+export const Link = ({link, onClick, selected, deleteLink, handleDrag, dragEnd, draggedOver, index, draggedY, lastDraggedOverPubId, newLinkOpen} : LinkProps) => {
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
     const [dragging, setDragging] = useState<boolean>(false);
     const device = useSelector(selectDevice)
@@ -45,8 +46,9 @@ export const Link = ({link, onClick, selected, deleteLink, handleDrag, dragEnd, 
     }
 
     return (
-        <div draggable={(device === 'desktop') ? true : false}
-            // onTouchMove={(e) => {e.preventDefault(); setDragging(true); handleDrag(e)}}
+        <div draggable={(device === 'desktop' && !newLinkOpen) ? true : false}
+            // onTouchStart={(e) => { if (setAppDragging) {setAppDragging(e, true)}}}
+            // onTouchMove={(e) => {setDragging(true); handleDrag(e)}}
             // onTouchEnd={(e) => {setDragging(false); dragEnd(e)}}
             onDragOver={(e) => draggedOver(e)}
             onDragStart={(e) => {setDragging(true); handleDrag(e)}}

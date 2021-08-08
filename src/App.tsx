@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
 import { Main } from './components/main/Main';
@@ -13,7 +13,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 
 function App() {
@@ -22,12 +21,18 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const validSession = useValidSession(user);
+  const [mobileClass, setMobileClass] = useState<string>('');
 
 
   useEffect(() => {
     let d: string = sessionService.identifyDeviceType();
+    if (d === 'mobile' || d === 'tablet'){
+      setMobileClass('mobile')
+    } else {
+      setMobileClass('');
+    }
     dispatch(setDevice(d));
-  })
+  }, [])
 
   useEffect(() => {
     let vh = window.innerHeight * 0.01;
@@ -74,7 +79,7 @@ function App() {
     <Router>
       <Switch>
         <Route path={["/", "/user/settings", "/user/account"]} exact={true}>
-          <div className="App">
+          <div className={"App " + mobileClass}>
             {
               user ? (
                 <Main />

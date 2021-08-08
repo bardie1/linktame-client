@@ -22,12 +22,15 @@
     margin-bottom: 30px;
 }
 
-
+.account-name-error-message-holder {
+    margin-top: 10px;
+}
 
 input.account-form {
     height: 30px;
     padding: 5px 10px;
-    width: 100%;
+    width: 95%;
+    max-width: 95%;
 }
 
 input.account-form:focus {
@@ -36,8 +39,11 @@ input.account-form:focus {
 }
 
 button.check-name-availability {
+    margin-top: 10px;
+    margin-left: auto;
     height: 30px;
-    margin-left: 30px;
+    width: fit-content;
+    padding: 5px 10px;
 }
 
 .account-form-input-group {

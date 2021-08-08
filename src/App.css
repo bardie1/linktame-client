@@ -12,6 +12,11 @@
   max-height: calc(var(--vh, 1vh) * 100);
 }
 
+.App.mobile {
+  position: relative;
+  overflow-y: scroll;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

@@ -27,7 +27,6 @@ export const Body = () => {
     const [dragId, setDragId] = useState<string>('');
     const [mobileDragY, setMobileDragY] = useState<number>(0);
     const [lastDraggedOverId, setLastDraggedOverId] = useState<string>('');
-
     const device = useSelector(selectDevice);
     const user = useSelector(selectUser);
     const draggingLink = useRef<string>('');
@@ -60,8 +59,7 @@ export const Body = () => {
     useEffect(() => {
         let mounted = true;
         getLinks(mounted,true);
-
-        return () => {mounted = false};
+        return () => {mounted = false;};
     }, [])
 
 
@@ -188,47 +186,63 @@ export const Body = () => {
        }
     }
 
+    const touchStarted = (e: any, value: boolean) => {
+    }
+
     const handleDrag = (e: any) => {
         setDragId(e.currentTarget.id);
         if (e.currentTarget) {
             draggingLink.current = e.currentTarget.id
         }
-        setTimeout(() => {
-            let linkEls  = document.getElementsByClassName("link-container");
-            if (linkEls) {
-                links.forEach((l, idx) => {
-                    if (l.public_id === draggingLink.current) {
-                        if (device === 'desktop') {
+
+        if (device === 'desktop') {
+            setTimeout(() => {
+                let linkEls  = document.getElementsByClassName("link-container");
+                if (linkEls) {
+                    links.forEach((l, idx) => {
+                        if (l.public_id === draggingLink.current) {
                             (linkEls.item(idx) as HTMLScriptElement).style.opacity = "0";
-                        } else {
-                            let height;
-                            let width;
-                            if (idx === 0 && links.length > 1) {
-                                height  = (linkEls.item(1) as HTMLScriptElement).offsetHeight - ((linkEls.item(0) as HTMLScriptElement).offsetHeight * 0.40);
-                                width = (linkEls.item(1) as HTMLScriptElement).offsetWidth - ((linkEls.item(0) as HTMLScriptElement).offsetWidth * 0.10);
-                            } else {
-                                height  = (linkEls.item(0) as HTMLScriptElement).offsetHeight - ((linkEls.item(0) as HTMLScriptElement).offsetHeight * 0.40);
-                                width = (linkEls.item(0) as HTMLScriptElement).offsetWidth - ((linkEls.item(0) as HTMLScriptElement).offsetWidth * 0.10);
-                            }
-                            let element = linkEls.item(idx) as HTMLScriptElement
-                            if (element) {
-                                element.style.position = "fixed";
-                                element.style.height = height + "px";
-                                element.style.width = width + "px";
-                                let touch = e.changedTouches[0] || e.touches[0];
-                                setMobileDragY(touch.clientY);
-                                element.style.zIndex = '1000';
-                                element.style.top = touch.clientY + 'px';
-                                element.style.left = touch.clientX + "px";
-                            }
                         }
-                    }
-                })
-            }
-        },0);
+                    });
+                }
+            },0);
+        } else {
+            // setTimeout(() => {
+            //     let linkEls  = document.getElementsByClassName("link-container");
+            //     if (linkEls) {
+            //         links.forEach((l, idx) => {
+            //             if (l.public_id === draggingLink.current) {
+            //                 let height;
+            //                 let width;
+            //                 if (idx === 0 && links.length > 1) {
+            //                     height  = (linkEls.item(1) as HTMLScriptElement).offsetHeight - ((linkEls.item(0) as HTMLScriptElement).offsetHeight * 0.40);
+            //                     width = (linkEls.item(1) as HTMLScriptElement).offsetWidth - ((linkEls.item(0) as HTMLScriptElement).offsetWidth * 0.10);
+            //                 } else {
+            //                     height  = (linkEls.item(0) as HTMLScriptElement).offsetHeight - ((linkEls.item(0) as HTMLScriptElement).offsetHeight * 0.40);
+            //                     width = (linkEls.item(0) as HTMLScriptElement).offsetWidth - ((linkEls.item(0) as HTMLScriptElement).offsetWidth * 0.10);
+            //                 }
+            //                 let element = linkEls.item(idx) as HTMLScriptElement
+            //                 if (element) {
+            //                     element.style.position = "fixed";
+            //                     element.style.height = height + "px";
+            //                     element.style.width = width + "px";
+            //                     let touch = e.changedTouches[0] || e.touches[0];
+            //                     setMobileDragY(touch.clientY);
+            //                     element.style.zIndex = '1000';
+            //                     element.style.top = touch.clientY + 'px';
+            //                     element.style.left = touch.clientX + "px";
+            //                 }
+            //             }
+            //         })
+            //     }
+            // },10000);
+        }
+
+
     }
 
     const dragEnd = (e: any) => {
+        console.log("ENDED");
         setLastDraggedOverId('');
         setMobileDragY(0);
         let linkEls  = document.getElementsByClassName("link-container");
@@ -244,6 +258,8 @@ export const Body = () => {
                 element.style.left = 'unset';
             })
         }
+
+        setDragId('');
     }
 
     const draggedOver = (e: any) =>{
@@ -309,10 +325,11 @@ export const Body = () => {
 
                 <LinksList noLinks={(links.length === 0 && !currentLink) ? true : false} onNewLinkClick={newLinkClicked} >
                     { links.sort((a,b) => a.link_pos - b.link_pos).map((l, idx) => {
-                        return <Link draggedOver={draggedOver} dragEnd={dragEnd} handleDrag={handleDrag} index={idx} draggedY={mobileDragY} lastDraggedOverPubId={lastDraggedOverId}
+                        return <Link draggedOver={draggedOver} dragEnd={dragEnd} handleDrag={handleDrag} index={idx} draggedY={mobileDragY} 
+                        newLinkOpen={(currentLink && !currentLink?.public_id) ? true : false} lastDraggedOverPubId={lastDraggedOverId}
                         deleteLink={deleteLink} selected={(currentLink?.public_id === l.public_id) ? true : false} onClick={editLink} key={l.public_id} link={l}/>
                     })}
-                    { (currentLink && !currentLink?.public_id) && <Link selected={true} onClick={editLink} link={currentLink} />}
+                    { (currentLink && !currentLink?.public_id) && <Link newLinkOpen={(!currentLink?.public_id) ? true : false} selected={true} onClick={editLink} link={currentLink} />}
                 </LinksList>
 
 
