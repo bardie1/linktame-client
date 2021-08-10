@@ -40,8 +40,8 @@ Saul contributed to the front end of this React application. Saul is a frontend 
 
 ### Richard Athey
 
-Richard contributed to the backend of this application which can be found here.
-Richard is currently a xxxx and enjoys writing code in xxxx and xxxxx.
+Richard contributed to the backend of this application which can be found [here](https://github.com/RichAth/linktame-api)  
+Richard is currently a programer at Bit Ant Studios and enjoys writing code in Python, C, and C++. And enjoys designing backend architectures.
 
 [LinkedIn](https://www.linkedin.com/in/richard-athey-aa8285122/)  
 [GitHub](https://github.com/RichAth)
