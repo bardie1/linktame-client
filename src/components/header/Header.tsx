@@ -12,7 +12,7 @@ export const Header = () => {
     const [buttonText, setButtonText ] = useState<string>('Copy');
     const [outsideClicked, setOutsideClicked] = useState<boolean>(false);
     const user = useSelector(selectUser)
-    const linkName = `linktame.herokuapp.com/${user.name}`;
+    const linkName = `linkta.me/${user.name}`;
     const history = useHistory();
 
     const onOutsideClick = () => {
