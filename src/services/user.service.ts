@@ -1,12 +1,11 @@
-import { env } from '../environments/environment';
 import { User } from '../models/user';
 import { sessionService } from './session.service';
 import jwt from 'jwt-decode';
 
-
+const url = process.env.REACT_APP_API_END_POINT;
 
 const linkNameAvaliable = async (linkName: string) => {
-    const res = await fetch(env.url + '', {
+    const res = await fetch(url + '', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -25,7 +24,7 @@ const linkNameAvaliable = async (linkName: string) => {
 
 const updateUser = async (user: User) => {
     const userState = sessionService.getUserAsObj();
-    let res = await fetch(env.url + 'auth/user', {
+    let res = await fetch(url + 'auth/user', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',

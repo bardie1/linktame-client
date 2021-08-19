@@ -29,6 +29,12 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "start:dev": "env-cmd -f ./environments/.dev.env react-scripts start",
+    "build:dev": " env-cmd -f ./environments/.dev.env npm run-script build",
+    "start:test": "env-cmd -f ./environments/.test.env react-scripts start",
+    "build:test": " env-cmd -f ./environments/.test.env npm run-script build",
+    "start:prod": "env-cmd -f ./environments/.prod.env react-scripts start",
+    "build:prod": " env-cmd -f ./environments/.prod.env npm run-script build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -51,6 +57,7 @@
     ]
   },
   "devDependencies": {
-    "@types/base-64": "^1.0.0"
+    "@types/base-64": "^1.0.0",
+    "env-cmd": "^10.1.0"
   }
 }

@@ -25,6 +25,7 @@ function App() {
 
 
   useEffect(() => {
+    console.log(process.env.REACT_APP_API_END_POINT);
     let d: string = sessionService.identifyDeviceType();
     if (d === 'mobile' || d === 'tablet'){
       setMobileClass('mobile')

@@ -1,10 +1,11 @@
-import { env } from '../environments/environment';
 import {UserSignUpLogin} from '../models/userSIgnUpLogin'
 import jwt from 'jwt-decode';
 import base64 from 'base-64';
 
+const url = process.env.REACT_APP_API_END_POINT;
+
 const login = async (user: UserSignUpLogin) => {
-    let res = await fetch(env.url + 'auth/login', {
+    let res = await fetch(url + 'auth/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -29,7 +30,7 @@ const login = async (user: UserSignUpLogin) => {
 }
 
 const signUp = async (user: UserSignUpLogin) => {
-    let res = await fetch(env.url + 'auth/user', {
+    let res = await fetch(url + 'auth/user', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

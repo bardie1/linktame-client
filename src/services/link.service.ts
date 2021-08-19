@@ -1,7 +1,7 @@
 import { sessionService } from "../services/session.service";
-import { env } from '../environments/environment';
 import LinkDto  from "../models/link";
 
+const url = process.env.REACT_APP_API_END_POINT;
 
 const httpPostConfig = {
     method: 'POST',
@@ -46,7 +46,7 @@ const createLink = async (link: LinkDto[], token:string) => {
     }
     httpPostConfig.headers["x-access-token"] = token;
     httpPostConfig.body = JSON.stringify(b);
-    let res = await fetch(env.url + "user/link", httpPostConfig)
+    let res = await fetch(url + "user/link", httpPostConfig)
                 .then(response => response.json())
                 .catch(err => {
                     return err
@@ -59,7 +59,7 @@ const getLinks = async (token?: string) => {
     if (token) {
         httpGetConfig.headers["x-access-token"] = token;
     }
-    let res = await fetch(env.url + "user/link", httpGetConfig)
+    let res = await fetch(url + "user/link", httpGetConfig)
                 .then(response => {
                     return response.json()})
                 .catch(err => err);
@@ -73,7 +73,7 @@ const deleteLink = async (linkPublicId: string, linkName: string, token: string)
     }
     httpDeleteConfig.headers["x-access-token"] = token;
     httpDeleteConfig.body = JSON.stringify(body);
-    let res = await fetch(env.url + "user/link", httpDeleteConfig)
+    let res = await fetch(url + "user/link", httpDeleteConfig)
                 .then(response => response.json())
                 .then(data => {
                     if (!data.successsful){
@@ -98,7 +98,7 @@ const updateLink = async (link: LinkDto, token: string) => {
     }
 
     httpPutConfig.body = JSON.stringify(body);
-    let res = await fetch(env.url + "user/link", httpPutConfig)
+    let res = await fetch(url + "user/link", httpPutConfig)
                 .then(response => response.json())
                 .then(data => {
                     if (!data.successsful) {
@@ -112,7 +112,7 @@ const updateLink = async (link: LinkDto, token: string) => {
 }
 
 const getLinksByName = async (name: string) => {
-    let res = await fetch(env.url + `links/${name}`, httpGetConfig)
+    let res = await fetch(url + `links/${name}`, httpGetConfig)
                 .then(response => (response.json()))
                 .catch(err => (err.message))
     
