@@ -30,6 +30,7 @@
 .links-list-new-link-holder > button {
     max-width: 100px;
     height: 100%;
+    margin: 0 5px;
 }
 
 .link-children-holder {
@@ -49,4 +50,12 @@
     display: flex;
     align-items: center;
     color: grey;
+}
+
+
+@media only screen and (max-width: 500px) {
+    .links-list-new-link-holder {
+        width: 40%;
+    }
+    
 }
